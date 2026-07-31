@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - eFootball Red Dimension</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .admin-header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        
+        .admin-header p {
+            margin: 0.5rem 0 0;
+            opacity: 0.9;
+        }
+        
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .users-table th,
+        .users-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .users-table th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .users-table tr:hover {
+            background: #f9fafb;
+        }
+        
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background 0.2s;
+        }
+        
+        .delete-btn:hover {
+            background: #dc2626;
+        }
+        
+        .delete-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+        
+        .error {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .success {
+            background: #d1fae5;
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card h3 {
+            margin: 0 0 0.5rem;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">eFootball Red Dimension</a>
+            <div class="nav-links">
+                <a href="index.html">Accueil</a>
+                <a href="profile.html">Mon Profil</a>
+                <a href="#" id="logoutBtn">Déconnexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>🔐 Administration</h1>
+            <p>Gestion des utilisateurs</p>
+        </div>
+        
+        <div id="adminAccessDenied" class="error hidden">
+            ⛔ Accès refusé. Cette page est réservée à l'administrateur.
+        </div>
+        
+        <div id="adminContent">
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>Total Utilisateurs</h3>
+                    <div class="value" id="totalUsers">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Emails Confirmés</h3>
+                    <div class="value" id="confirmedEmails">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Utilisateurs Actifs (30j)</h3>
+                    <div class="value" id="activeUsers">0</div>
+                </div>
+            </div>
+            
+            <div id="errorMessage" class="error hidden"></div>
+            <div id="successMessage" class="success hidden"></div>
+            
+            <div id="loading" class="loading">
+                Chargement des utilisateurs...
+            </div>
+            
+            <table class="users-table hidden" id="usersTable">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Nom d'utilisateur</th>
+                        <th>Nom complet</th>
+                        <th>Date d'inscription</th>
+                        <th>Dernière connexion</th>
+                        <th>Email confirmé</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
