@@ -2,7 +2,9 @@
 -- Cette fonction supprime : commentaires, profil, et compte auth
 -- Nécessite d'être exécutée dans l'éditeur SQL Supabase avec les droits admin
 
-CREATE OR REPLACE FUNCTION delete_user(user_id UUID)
+DROP FUNCTION IF EXISTS delete_user(UUID);
+
+CREATE FUNCTION delete_user(user_id UUID)
 RETURNS JSONB
 LANGUAGE plpgsql
 SECURITY DEFINER
