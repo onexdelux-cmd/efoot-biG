@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur d'icônes PWA Simple</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1e3a8a;
+            text-align: center;
+        }
+        button {
+            background: #1e3a8a;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            width: 100%;
+        }
+        button:hover {
+            background: #1e40af;
+        }
+        .icon-preview {
+            text-align: center;
+            margin: 20px 0;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Générateur d'icônes PWA</h1>
+        <p>Cliquez sur le bouton pour générer et télécharger les icônes nécessaires.</p>
+        
+        <div class="icon-preview">
+            <canvas id="icon192" width="192" height="192"></canvas>
+            <canvas id="icon512" width="512" height="512"></canvas>
+        </div>
+        
+        <button onclick="generateAndDownloadIcons()">Générer et télécharger les icônes</button>
+    </div>
+
+    <script>
+        function generateAndDownloadIcons() {
+            // Générer l'icône 192x192
+            const canvas192 = document.getElementById('icon192');
+            const ctx192 = canvas192.getContext('2d');
+            
+            // Fond bleu
+            ctx192.fillStyle = '#1e3a8a';
+            ctx192.fillRect(0, 0, 192, 192);
+            
+            // Texte "eF"
+            ctx192.fillStyle = 'white';
+            ctx192.font = 'bold 60px Arial';
+            ctx192.textAlign = 'center';
+            ctx192.textBaseline = 'middle';
+            ctx192.fillText('eF', 96, 96);
+            
+            // Cercle décoratif
+            ctx192.strokeStyle = '#3b82f6';
+            ctx192.lineWidth = 4;
+            ctx192.beginPath();
+            ctx192.arc(96, 96, 70, 0, Math.PI * 2);
+            ctx192.stroke();
+            
+            // Télécharger
+            canvas192.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'icon-192.png';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            // Générer l'icône 512x512 après un court délai
+            setTimeout(function() {
+                const canvas512 = document.getElementById('icon512');
+                const ctx512 = canvas512.getContext('2d');
+                
+                // Fond bleu
+                ctx512.fillStyle = '#1e3a8a';
+                ctx512.fillRect(0, 0, 512, 512);
+                
+                // Texte "eF"
+                ctx512.fillStyle = 'white';
+                ctx512.font = 'bold 160px Arial';
+                ctx512.textAlign = 'center';
+                ctx512.textBaseline = 'middle';
+                ctx512.fillText('eF', 256, 256);
+                
+                // Cercle décoratif
+                ctx512.strokeStyle = '#3b82f6';
+                ctx512.lineWidth = 10;
+                ctx512.beginPath();
+                ctx512.arc(256, 256, 190, 0, Math.PI * 2);
+                ctx512.stroke();
+                
+                // Télécharger
+                canvas512.toBlob(function(blob) {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'icon-512.png';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                });
+            }, 500);
+        }
+    </script>
+</body>
+</html>
