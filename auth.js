@@ -103,6 +103,69 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Gestion du formulaire mot de passe oublié
+    const showForgotPassword = document.getElementById('showForgotPassword');
+    const showLoginFromForgot = document.getElementById('showLoginFromForgot');
+    const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+
+    if (showForgotPassword) {
+        showForgotPassword.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Affichage formulaire mot de passe oublié');
+            loginForm.classList.add('hidden');
+            registerForm.classList.add('hidden');
+            forgotPasswordForm.classList.remove('hidden');
+        });
+    }
+
+    if (showLoginFromForgot) {
+        showLoginFromForgot.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Retour au formulaire de connexion');
+            forgotPasswordForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        });
+    }
+
+    // Gestion de la réinitialisation de mot de passe
+    forgotPasswordForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (!window.supabaseClient) {
+            showMessage('Erreur: Supabase n\'est pas initialisé. Veuillez rafraîchir la page.', 'error');
+            return;
+        }
+
+        const email = document.getElementById('forgotEmail').value;
+        
+        try {
+            const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + '/auth.html?reset=true'
+            });
+
+            if (error) throw error;
+
+            showMessage('Lien de réinitialisation envoyé ! Vérifiez votre email.', 'success');
+            setTimeout(() => {
+                forgotPasswordForm.classList.add('hidden');
+                loginForm.classList.remove('hidden');
+            }, 2000);
+
+        } catch (error) {
+            console.error('Erreur de réinitialisation:', error);
+            showMessage('Erreur: ' + error.message, 'error');
+        }
+    });
+
+    // Vérifier si l'utilisateur vient d'un lien de réinitialisation
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('reset') === 'true') {
+        showMessage('Vous pouvez maintenant définir votre nouveau mot de passe.', 'info');
+    }
+
     // Gestion de l'inscription
     registerForm.addEventListener('submit', async function(e) {
         console.log('Tentative d\'inscription...');
