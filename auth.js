@@ -278,20 +278,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
-            // Vérifier si l'email existe déjà dans la table profiles
-            console.log('Vérification si l\'email existe déjà dans profiles...');
-            const { data: existingProfile, error: profileError } = await supabaseClient
-                .from('profiles')
-                .select('email')
-                .eq('email', email)
-                .single();
-
-            if (existingProfile) {
-                console.log('Email déjà existant dans profiles');
-                showMessage('Cet email est déjà inscrit. Connectez-vous ou utilisez un autre email.', 'error');
-                return;
-            }
-
             console.log('Appel à Supabase pour inscription...');
             const { data, error } = await supabaseClient.auth.signUp({
                 email: email,
@@ -307,10 +293,22 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Réponse Supabase inscription:', { data, error });
 
             if (error) {
-                // Gestion spécifique des erreurs de doublons
-                if (error.message.includes('already registered') || 
-                    error.message.includes('already been registered') ||
-                    error.message.includes('User already registered')) {
+                // Gestion améliorée des erreurs de doublons
+                const duplicateKeywords = [
+                    'already registered',
+                    'already been registered',
+                    'User already registered',
+                    'already exists',
+                    'duplicate',
+                    'already in use'
+                ];
+                
+                const isDuplicateError = duplicateKeywords.some(keyword => 
+                    error.message.toLowerCase().includes(keyword.toLowerCase())
+                );
+                
+                if (isDuplicateError) {
+                    console.log('Erreur de doublon détectée:', error.message);
                     showMessage('Cet email est déjà inscrit. Connectez-vous ou utilisez un autre email.', 'error');
                     return;
                 }
