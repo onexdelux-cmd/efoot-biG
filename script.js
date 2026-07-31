@@ -3,6 +3,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const successMessage = document.getElementById('successMessage');
     const resetBtn = document.getElementById('resetBtn');
     
+    // Vérifier si le formulaire existe avant d'ajouter les écouteurs d'événements
+    if (!form) {
+        console.log('Formulaire newsletter non trouvé sur cette page');
+        return;
+    }
+    
     // Charger les abonnés depuis le localStorage
     let subscribers = JSON.parse(localStorage.getItem('newsletterSubscribers')) || [];
     
