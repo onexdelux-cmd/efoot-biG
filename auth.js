@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
             uppercase: /[A-Z]/.test(password),
             lowercase: /[a-z]/.test(password),
             number: /[0-9]/.test(password),
-            special: /[!@#$%^&*]/.test(password)
+            special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
         };
 
         // Mettre à jour les exigences visuelles
