@@ -278,6 +278,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
+            // Vérifier si l'utilisateur existe déjà via la fonction RPC
+            console.log('Vérification si l\'utilisateur existe déjà via RPC...');
+            const { data: userExists, error: checkError } = await supabaseClient.rpc('check_user_exists', {
+                user_email: email
+            });
+
+            console.log('Résultat vérification utilisateur:', { userExists, checkError });
+
+            if (userExists === true) {
+                console.log('Utilisateur déjà existant');
+                showMessage('Cet email est déjà inscrit. Connectez-vous ou utilisez un autre email.', 'error');
+                return;
+            }
+
             console.log('Appel à Supabase pour inscription...');
             const { data, error } = await supabaseClient.auth.signUp({
                 email: email,
