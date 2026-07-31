@@ -278,30 +278,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
-            // Test de connexion Supabase
-            console.log('Test de connexion Supabase...');
-            const { data: testData, error: testError } = await supabaseClient.from('profiles').select('count').limit(1);
-            console.log('Test connexion Supabase:', { testData, testError });
-
-            // Vérifier si l'utilisateur existe déjà via la fonction RPC
-            console.log('Vérification si l\'utilisateur existe déjà via RPC pour email:', email);
-            const { data: userExists, error: checkError } = await supabaseClient.rpc('check_user_exists', {
-                user_email: email
-            });
-
-            console.log('Résultat vérification utilisateur:', { userExists, checkError, type: typeof userExists });
-
-            if (checkError) {
-                console.error('Erreur lors de la vérification RPC:', checkError);
-                // Continuer malgré l'erreur RPC
-            }
-
-            if (userExists === true) {
-                console.log('Utilisateur déjà existant détecté');
-                showMessage('Cet email est déjà inscrit. Connectez-vous ou utilisez un autre email.', 'error');
-                return;
-            }
-
             console.log('Appel à Supabase pour inscription...');
             const { data, error } = await supabaseClient.auth.signUp({
                 email: email,
@@ -317,25 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Réponse Supabase inscription:', { data, error });
 
             if (error) {
-                // Gestion améliorée des erreurs de doublons
-                const duplicateKeywords = [
-                    'already registered',
-                    'already been registered',
-                    'User already registered',
-                    'already exists',
-                    'duplicate',
-                    'already in use'
-                ];
-                
-                const isDuplicateError = duplicateKeywords.some(keyword => 
-                    error.message.toLowerCase().includes(keyword.toLowerCase())
-                );
-                
-                if (isDuplicateError) {
-                    console.log('Erreur de doublon détectée:', error.message);
-                    showMessage('Cet email est déjà inscrit. Connectez-vous ou utilisez un autre email.', 'error');
-                    return;
-                }
+                // La base de données gère déjà les doublons via la contrainte UNIQUE
                 throw error;
             }
 
