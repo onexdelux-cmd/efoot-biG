@@ -104,19 +104,88 @@
 }
 
 .auth-switch p {
-    color: var(--text-light);
-    font-size: 0.95rem;
+    text-align: center;
+    margin-top: 1rem;
 }
 
 .auth-switch a {
     color: var(--primary-color);
     text-decoration: none;
     font-weight: 600;
-    cursor: pointer;
 }
 
 .auth-switch a:hover {
     text-decoration: underline;
+}
+
+/* Password Strength Styles */
+.password-strength {
+    margin-top: 0.5rem;
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.password-strength-bar {
+    height: 100%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    width: 0;
+}
+
+.password-strength.weak .password-strength-bar {
+    width: 25%;
+    background: #ef4444;
+}
+
+.password-strength.fair .password-strength-bar {
+    width: 50%;
+    background: #f59e0b;
+}
+
+.password-strength.good .password-strength-bar {
+    width: 75%;
+    background: #3b82f6;
+}
+
+.password-strength.strong .password-strength-bar {
+    width: 100%;
+    background: #10b981;
+}
+
+.password-requirements {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.password-requirements p {
+    margin: 0.25rem 0;
+    font-weight: 600;
+}
+
+.password-requirements ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.25rem 0;
+}
+
+.password-requirements li {
+    padding: 0.25rem 0;
+    color: #9ca3af;
+}
+
+.password-requirements li.valid {
+    color: #10b981;
+}
+
+.password-requirements li::before {
+    content: "○ ";
+    margin-right: 0.5rem;
+}
+
+.password-requirements li.valid::before {
+    content: "✓ ";
 }
 
 /* Auth Message */

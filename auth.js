@@ -166,6 +166,53 @@ document.addEventListener('DOMContentLoaded', function() {
         showMessage('Vous pouvez maintenant définir votre nouveau mot de passe.', 'info');
     }
 
+    // Validation de la force du mot de passe
+    const registerPassword = document.getElementById('registerPassword');
+    const passwordStrength = document.getElementById('passwordStrength');
+    const passwordRequirements = document.getElementById('passwordRequirements');
+
+    if (registerPassword) {
+        registerPassword.addEventListener('input', function() {
+            const password = registerPassword.value;
+            checkPasswordStrength(password);
+        });
+
+        // Initialiser la barre de force
+        const strengthBar = document.createElement('div');
+        strengthBar.className = 'password-strength-bar';
+        passwordStrength.appendChild(strengthBar);
+    }
+
+    function checkPasswordStrength(password) {
+        let strength = 0;
+        const requirements = {
+            length: password.length >= 8,
+            uppercase: /[A-Z]/.test(password),
+            lowercase: /[a-z]/.test(password),
+            number: /[0-9]/.test(password),
+            special: /[!@#$%^&*]/.test(password)
+        };
+
+        // Mettre à jour les exigences visuelles
+        document.getElementById('req-length').classList.toggle('valid', requirements.length);
+        document.getElementById('req-uppercase').classList.toggle('valid', requirements.uppercase);
+        document.getElementById('req-lowercase').classList.toggle('valid', requirements.lowercase);
+        document.getElementById('req-number').classList.toggle('valid', requirements.number);
+        document.getElementById('req-special').classList.toggle('valid', requirements.special);
+
+        // Calculer la force
+        strength = Object.values(requirements).filter(Boolean).length;
+
+        // Mettre à jour la barre de force
+        passwordStrength.className = 'password-strength';
+        if (strength <= 1) passwordStrength.classList.add('weak');
+        else if (strength <= 2) passwordStrength.classList.add('fair');
+        else if (strength <= 3) passwordStrength.classList.add('good');
+        else if (strength >= 4) passwordStrength.classList.add('strong');
+
+        return strength >= 4; // Retourne true si le mot de passe est assez fort
+    }
+
     // Gestion de l'inscription
     registerForm.addEventListener('submit', async function(e) {
         console.log('Tentative d\'inscription...');
@@ -192,8 +239,14 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        if (password.length < 6) {
-            showMessage('Le mot de passe doit contenir au moins 6 caractères', 'error');
+        if (password.length < 8) {
+            showMessage('Le mot de passe doit contenir au moins 8 caractères', 'error');
+            return;
+        }
+
+        // Vérifier la force du mot de passe
+        if (!checkPasswordStrength(password)) {
+            showMessage('Le mot de passe n\'est pas assez fort. Veuillez respecter toutes les exigences.', 'error');
             return;
         }
 
