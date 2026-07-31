@@ -301,6 +301,54 @@ body {
     transform: translateY(0);
 }
 
+/* Legal Page Styles */
+.legal-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.legal-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.legal-section h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+}
+
+.legal-section h3 {
+    color: var(--text-dark);
+    margin: 1.5rem 0 0.75rem 0;
+    font-size: 1.2rem;
+}
+
+.legal-section p {
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.legal-section ul {
+    margin: 0.75rem 0 1rem 1.5rem;
+    color: var(--text-light);
+}
+
+.legal-section li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+.legal-section strong {
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
 /* Newsletter Notification Styles */
 .newsletter-notification {
     background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
