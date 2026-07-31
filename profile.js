@@ -33,15 +33,78 @@ document.addEventListener('DOMContentLoaded', function() {
     waitForSupabase();
 
     // Gestion de la déconnexion
-    logoutBtn.addEventListener('click', async function(e) {
-        e.preventDefault();
+    logoutBtn.addEventListener('click', async function() {
         try {
             await supabaseClient.auth.signOut();
             window.location.href = 'index.html';
         } catch (error) {
             console.error('Erreur de déconnexion:', error);
+            showError('Erreur lors de la déconnexion');
         }
     });
+
+    // Gestion de la suppression de compte
+    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+    if (deleteAccountBtn) {
+        deleteAccountBtn.addEventListener('click', async function() {
+            // Confirmation en deux étapes
+            const confirmation = confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');
+            if (!confirmation) return;
+
+            const finalConfirmation = confirm('Cette action supprimera définitivement :\n- Votre profil\n- Vos commentaires\n- Vos données personnelles\n\nConfirmer la suppression ?');
+            if (!finalConfirmation) return;
+
+            try {
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (!user) {
+                    showError('Utilisateur non connecté');
+                    return;
+                }
+
+                // Supprimer les commentaires de l'utilisateur
+                const { error: commentsError } = await supabaseClient
+                    .from('comments')
+                    .delete()
+                    .eq('user_id', user.id);
+
+                if (commentsError) {
+                    console.error('Erreur suppression commentaires:', commentsError);
+                }
+
+                // Supprimer le profil
+                const { error: profileError } = await supabaseClient
+                    .from('profiles')
+                    .delete()
+                    .eq('id', user.id);
+
+                if (profileError) {
+                    console.error('Erreur suppression profil:', profileError);
+                }
+
+                // Supprimer le compte auth via l'API admin
+                const { error: authError } = await supabaseClient.rpc('delete_user', {
+                    user_id: user.id
+                });
+
+                if (authError) {
+                    console.error('Erreur suppression compte auth:', authError);
+                    // Si la RPC échoue, essayer avec l'API directe
+                    // Note: Ceci nécessite les permissions admin
+                    showError('Erreur lors de la suppression du compte. Contactez le support.');
+                    return;
+                }
+
+                // Déconnexion et redirection
+                await supabaseClient.auth.signOut();
+                alert('Votre compte a été supprimé avec succès.');
+                window.location.href = 'index.html';
+
+            } catch (error) {
+                console.error('Erreur suppression compte:', error);
+                showError('Erreur lors de la suppression du compte');
+            }
+        });
+    }
 
     // Gestion du formulaire de profil
     profileForm.addEventListener('submit', async function(e) {

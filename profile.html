@@ -74,9 +74,17 @@
                             <label for="bio">Biographie</label>
                             <textarea id="bio" name="bio" rows="4" placeholder="Parlez-nous de vous..."></textarea>
                         </div>
-                        
-                        <button type="submit" class="btn-primary">Enregistrer les modifications</button>
                     </form>
+                    <div class="profile-actions">
+                        <button id="saveProfile" class="btn-primary">Enregistrer les modifications</button>
+                        <button id="logoutBtn" class="btn-secondary">Se déconnecter</button>
+                    </div>
+                    
+                    <div class="danger-zone">
+                        <h3>Zone de danger</h3>
+                        <p>Actions irréversibles sur votre compte</p>
+                        <button id="deleteAccountBtn" class="btn-danger">Supprimer mon compte</button>
+                    </div>
                 </div>
             </div>
 

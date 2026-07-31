@@ -193,6 +193,55 @@
     transform: translateY(0);
 }
 
+.btn-secondary:hover {
+    background: #6b7280;
+}
+
+.btn-secondary:active {
+    transform: translateY(0);
+}
+
+/* Danger Zone Styles */
+.danger-zone {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.5rem;
+}
+
+.danger-zone h3 {
+    color: #dc2626;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.danger-zone p {
+    color: #7f1d1d;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+    transform: translateY(-2px);
+}
+
+.btn-danger:active {
+    transform: translateY(0);
+}
+
 /* User Comments Section */
 .user-comments-section {
     background: var(--white);
