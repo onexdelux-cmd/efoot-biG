@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Supprimer le compte via la fonction RPC améliorée
                 const { data: deleteResult, error: authError } = await supabaseClient.rpc('delete_user', {
-                    user_id: user.id
+                    target_user_id: user.id
                 });
 
                 console.log('Résultat suppression:', { deleteResult, authError });

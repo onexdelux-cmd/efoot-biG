@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Suppression utilisateur:', userId);
             
             const { data: deleteResult, error } = await supabaseClient.rpc('delete_user', {
-                user_id: userId
+                target_user_id: userId
             });
             
             console.log('Résultat suppression:', deleteResult, error);
