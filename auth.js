@@ -39,12 +39,55 @@ document.addEventListener('DOMContentLoaded', function() {
         if (window.supabaseClient) {
             console.log('✅ SupabaseClient disponible, initialisation terminée');
             initActivityLogger(); // Initialiser le logger d'activité
+            checkAuthStatus(); // Vérifier si l'utilisateur est déjà connecté
+            setupAuthListener(); // Configurer l'écouteur d'état d'authentification
         } else {
             console.log('⏳ Attente de SupabaseClient...');
             setTimeout(waitForSupabase, 100);
         }
     }
-    
+
+    // Vérifier le statut d'authentification
+    async function checkAuthStatus() {
+        try {
+            const { data: { session }, error } = await supabaseClient.auth.getSession();
+            
+            if (error) {
+                console.error('Erreur lors de la vérification de session:', error);
+                return;
+            }
+
+            if (session) {
+                console.log('✅ Utilisateur déjà connecté:', session.user.email);
+                showMessage('Vous êtes déjà connecté. Redirection...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'profile.html';
+                }, 1500);
+            } else {
+                console.log('ℹ️ Aucune session active');
+            }
+        } catch (error) {
+            console.error('Erreur lors de la vérification d\'authentification:', error);
+        }
+    }
+
+    // Configurer l'écouteur d'état d'authentification
+    function setupAuthListener() {
+        if (window.supabaseClient) {
+            window.supabaseClient.auth.onAuthStateChange((event, session) => {
+                console.log('Changement d\'état auth:', event, session ? session.user.email : 'no session');
+                
+                if (event === 'SIGNED_IN') {
+                    console.log('✅ Utilisateur connecté');
+                } else if (event === 'SIGNED_OUT') {
+                    console.log('👋 Utilisateur déconnecté');
+                } else if (event === 'TOKEN_REFRESHED') {
+                    console.log('🔄 Token rafraîchi');
+                }
+            });
+        }
+    }
+
     // Commencer l'attente
     waitForSupabase();
 
