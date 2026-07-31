@@ -1,4 +1,4 @@
-<a href="https://ibb.co/vx5KBVZD"><img src="https://i.ibb.co/rGP1tF4v/photo-2026-07-31-15-09-46.jpg" alt="photo-2026-07-31-15-09-46" border="0"></a>* {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -29,6 +29,14 @@
     color: var(--white);
     text-decoration: none;
     transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
 }
 
 .nav-logo:hover {
