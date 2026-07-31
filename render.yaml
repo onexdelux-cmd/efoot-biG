@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: efootball-red-dimension
+    env: static
+    buildCommand: ""
+    startCommand: ""
+    staticPublishPath: .
+    envVars:
+      - key: NODE_VERSION
+        value: "18"
