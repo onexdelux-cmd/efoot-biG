@@ -302,7 +302,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             if (data.user && !data.session) {
-                showMessage('Inscription réussie ! Vérifiez votre email pour confirmer votre compte.', 'info');
+                showMessage('Inscription réussie ! Vérifiez votre email pour confirmer votre compte. Vous pouvez maintenant vous connecter.', 'info');
+                // Passer automatiquement au formulaire de connexion
+                setTimeout(() => {
+                    registerForm.classList.add('hidden');
+                    loginForm.classList.remove('hidden');
+                    authTitle.textContent = 'Connexion';
+                    authSubtitle.textContent = 'Connectez-vous avec votre compte';
+                    // Pré-remplir l'email
+                    document.getElementById('loginEmail').value = email;
+                }, 2000);
             } else {
                 showMessage('Inscription réussie ! Redirection...', 'success');
                 setTimeout(() => {
