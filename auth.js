@@ -149,7 +149,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
             console.log('Réponse Supabase inscription:', { data, error });
 
-            if (error) throw error;
+            if (error) {
+                // Gestion spécifique des erreurs de doublons
+                if (error.message.includes('already registered') || 
+                    error.message.includes('already been registered') ||
+                    error.message.includes('User already registered')) {
+                    showMessage('Cet email est déjà inscrit. Connectez-vous ou utilisez un autre email.', 'error');
+                    return;
+                }
+                throw error;
+            }
 
             if (data.user && !data.session) {
                 showMessage('Inscription réussie ! Vérifiez votre email pour confirmer votre compte.', 'info');

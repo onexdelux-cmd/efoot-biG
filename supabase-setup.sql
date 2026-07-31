@@ -2,6 +2,7 @@
 CREATE TABLE profiles (
     id UUID REFERENCES auth.users(id) PRIMARY KEY,
     username TEXT UNIQUE,
+    email TEXT UNIQUE,
     full_name TEXT,
     avatar_url TEXT,
     bio TEXT,
@@ -23,10 +24,11 @@ CREATE TABLE comments (
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.profiles (id, username, full_name, avatar_url, bio)
+  INSERT INTO public.profiles (id, username, email, full_name, avatar_url, bio)
   VALUES (
     NEW.id, 
     NEW.email, 
+    NEW.email,
     COALESCE(NEW.raw_user_meta_data->>'full_name', ''), 
     NEW.raw_user_meta_data->>'avatar_url',
     ''
