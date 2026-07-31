@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (window.supabaseClient) {
             console.log('✅ SupabaseClient disponible, initialisation terminée');
             initActivityLogger(); // Initialiser le logger d'activité
-            checkAuthStatus();
         } else {
             console.log('⏳ Attente de SupabaseClient...');
             setTimeout(waitForSupabase, 100);
