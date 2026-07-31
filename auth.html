@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eFootball Red Dimension - Connexion</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e3a8a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">eFootball Red Dimension</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Newsletter</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="tutoriel.html" class="nav-link">Tutoriel</a>
+                <a href="articles.html" class="nav-link">Articles</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1 id="authTitle">Connexion</h1>
+                    <p id="authSubtitle">Connectez-vous pour accéder à votre profil</p>
+                </div>
+
+                <!-- Formulaire de connexion -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">Adresse email</label>
+                        <input type="email" id="loginEmail" name="email" placeholder="votre@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Mot de passe</label>
+                        <input type="password" id="loginPassword" name="password" placeholder="Votre mot de passe" required>
+                    </div>
+                    
+                    <button type="submit" class="auth-btn">Se connecter</button>
+                    
+                    <div class="auth-switch">
+                        <p>Pas encore de compte ? <a href="#" id="showRegister">S'inscrire</a></p>
+                    </div>
+                </form>
+
+                <!-- Formulaire d'inscription -->
+                <form id="registerForm" class="auth-form hidden">
+                    <div class="form-group">
+                        <label for="registerEmail">Adresse email</label>
+                        <input type="email" id="registerEmail" name="email" placeholder="votre@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerPassword">Mot de passe</label>
+                        <input type="password" id="registerPassword" name="password" placeholder="Minimum 6 caractères" required minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">Confirmer le mot de passe</label>
+                        <input type="password" id="registerConfirmPassword" name="confirmPassword" placeholder="Confirmer le mot de passe" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerUsername">Nom d'utilisateur (optionnel)</label>
+                        <input type="text" id="registerUsername" name="username" placeholder="Votre nom d'utilisateur">
+                    </div>
+                    
+                    <button type="submit" class="auth-btn">S'inscrire</button>
+                    
+                    <div class="auth-switch">
+                        <p>Déjà un compte ? <a href="#" id="showLogin">Se connecter</a></p>
+                    </div>
+                </form>
+
+                <!-- Message de statut -->
+                <div id="authMessage" class="auth-message hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 eFootball Red Dimension. Tous droits réservés.</p>
+        <div class="footer-links">
+            <a href="index.html">Newsletter</a>
+            <a href="blog.html">Blog</a>
+            <a href="tutoriel.html">Tutoriel</a>
+            <a href="articles.html">Articles</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Initialisation directe de Supabase avec attente explicite
+        const SUPABASE_URL = 'https://ncovozhxeuqgrmttgwwh.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_GwdMv51Znppk6lRK-_jJKg_J3CRMr-5';
+        
+        function initSupabase() {
+            if (typeof window !== 'undefined' && window.supabase) {
+                window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('✅ Supabase initialisé avec succès');
+                return true;
+            } else {
+                console.log('⏳ Attente du chargement Supabase...');
+                return false;
+            }
+        }
+        
+        // Essayer immédiatement
+        if (!initSupabase()) {
+            // Réessayer toutes les 100ms
+            const interval = setInterval(() => {
+                if (initSupabase()) {
+                    clearInterval(interval);
+                }
+            }, 100);
+            
+            // Timeout après 5 secondes
+            setTimeout(() => {
+                clearInterval(interval);
+                if (!window.supabaseClient) {
+                    console.error('❌ Timeout: Supabase n\'a pas pu être initialisé');
+                }
+            }, 5000);
+        }
+    </script>
+    <script src="auth.js"></script>
+    <script src="nav-auth.js"></script>
+</body>
+</html>

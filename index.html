@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eFootball Red Dimension - Newsletter</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e3a8a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">eFootball Red Dimension</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">Newsletter</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="tutoriel.html" class="nav-link">Tutoriel</a>
+                <a href="articles.html" class="nav-link">Articles</a>
+                <a href="auth.html" class="nav-link">Connexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="title">eFootball Red Dimension</h1>
+            <p class="subtitle">Recevez les dernières actualités eFootball, analyses et mises à jour directement dans votre boîte mail</p>
+        </header>
+
+        <!-- Notification Newsletter pour les non-abonnés -->
+        <div id="newsletterNotification" class="newsletter-notification hidden">
+            <div class="notification-content">
+                <div class="notification-icon">📧</div>
+                <div class="notification-text">
+                    <h4>Ne manquez aucune actualité eFootball !</h4>
+                    <p>Abonnez-vous à notre newsletter pour recevoir les dernières analyses et stratégies.</p>
+                </div>
+                <button id="closeNotification" class="notification-close">×</button>
+                <button id="subscribeNow" class="notification-action">S'abonner</button>
+            </div>
+        </div>
+
+        <main class="main-content">
+            <div class="newsletter-card">
+                <div class="card-header">
+                    <h2>Inscription à la Newsletter</h2>
+                    <p>Abonnez-vous pour recevoir notre contenu exclusif</p>
+                </div>
+                
+                <!-- Joyful Newsletter Signup Widget -->
+                <div id="newsletterWidget">
+                    <div data-joyful-embed data-publication-id="Gj5hTTViyWDwjFQ9tpcm7"></div>
+                    <script src="https://joyful.to/embed/p/Gj5hTTViyWDwjFQ9tpcm7/widget.js" async></script>
+                </div>
+                
+                <!-- Message pour les abonnés -->
+                <div id="subscribedMessage" class="subscribed-message hidden">
+                    <div class="subscribed-content">
+                        <div class="subscribed-icon">✅</div>
+                        <h3>Vous êtes déjà abonné !</h3>
+                        <p>Merci de faire partie de notre communauté eFootball Red Dimension.</p>
+                        <button id="unsubscribeBtn" class="btn-secondary">Se désabonner</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">📰</div>
+                    <h3>Actualités</h3>
+                    <p>Les dernières informations sur le jeu, les mises à jour et les événements</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📚</div>
+                    <h3>Guides</h3>
+                    <p>Conseils d'experts pour améliorer votre gameplay et vos stratégies</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">�</div>
+                    <h3>Compétitions</h3>
+                    <p>Suivez les tournois et les performances des meilleurs joueurs</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2026 eFootball Red Dimension. Tous droits réservés.</p>
+            <div class="footer-links">
+                <a href="blog.html">Blog</a>
+                <a href="tutoriel.html">Tutoriel</a>
+                <a href="articles.html">Articles</a>
+                <a href="#">Politique de confidentialité</a>
+                <a href="#">Conditions d'utilisation</a>
+                <a href="#">Contact</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="script.js"></script>
+    <script src="newsletter.js"></script>
+    <script src="nav-auth.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(function(registration) {
+                    console.log('Service Worker enregistré avec succès:', registration.scope);
+                })
+                .catch(function(error) {
+                    console.log('Erreur lors de l\'enregistrement du Service Worker:', error);
+                });
+        }
+    </script>
+</body>
+</html>

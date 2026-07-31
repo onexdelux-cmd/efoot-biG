@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eFootball Red Dimension - Profil</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e3a8a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">eFootball Red Dimension</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Newsletter</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="tutoriel.html" class="nav-link">Tutoriel</a>
+                <a href="articles.html" class="nav-link">Articles</a>
+                <a href="profile.html" class="nav-link active">Mon Profil</a>
+                <a href="#" id="logoutBtn" class="nav-link">Déconnexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-header">
+            <h1 class="profile-title">Mon Profil</h1>
+            <p class="profile-subtitle">Gérez votre compte et vos préférences</p>
+        </div>
+
+        <!-- Message de chargement -->
+        <div id="loadingMessage" class="loading-message">
+            <p>Chargement de votre profil...</p>
+        </div>
+
+        <!-- Message d'erreur -->
+        <div id="errorMessage" class="error-message hidden">
+            <p>Vous devez être connecté pour accéder à cette page.</p>
+            <a href="auth.html" class="btn-primary">Se connecter</a>
+        </div>
+
+        <!-- Contenu du profil -->
+        <div id="profileContent" class="profile-content hidden">
+            <div class="profile-card">
+                <div class="profile-avatar-section">
+                    <div class="avatar-container">
+                        <img id="avatarImage" src="" alt="Avatar" class="avatar-image">
+                        <label for="avatarUpload" class="avatar-upload-btn">
+                            <span>Changer</span>
+                        </label>
+                        <input type="file" id="avatarUpload" accept="image/*" class="hidden">
+                    </div>
+                    <h2 id="usernameDisplay" class="username-display"></h2>
+                    <p id="emailDisplay" class="email-display"></p>
+                </div>
+
+                <div class="profile-form-section">
+                    <form id="profileForm">
+                        <div class="form-group">
+                            <label for="username">Nom d'utilisateur</label>
+                            <input type="text" id="username" name="username" placeholder="Votre nom d'utilisateur">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="fullName">Nom complet</label>
+                            <input type="text" id="fullName" name="fullName" placeholder="Votre nom complet">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bio">Biographie</label>
+                            <textarea id="bio" name="bio" rows="4" placeholder="Parlez-nous de vous..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Enregistrer les modifications</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Section des commentaires de l'utilisateur -->
+            <div class="user-comments-section">
+                <h3>Mes commentaires</h3>
+                <div id="userComments" class="user-comments">
+                    <p class="no-comments">Aucun commentaire pour le moment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 eFootball Red Dimension. Tous droits réservés.</p>
+        <div class="footer-links">
+            <a href="index.html">Newsletter</a>
+            <a href="blog.html">Blog</a>
+            <a href="tutoriel.html">Tutoriel</a>
+            <a href="articles.html">Articles</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="profile.js"></script>
+    <script src="nav-auth.js"></script>
+</body>
+</html>

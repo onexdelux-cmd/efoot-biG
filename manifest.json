@@ -1,0 +1,42 @@
+{
+  "name": "eFootball Red Dimension",
+  "short_name": "eFootball RD",
+  "description": "Recevez les dernières actualités eFootball, analyses et mises à jour directement dans votre boîte mail",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#1e3a8a",
+  "theme_color": "#1e3a8a",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["sports", "news", "games"],
+  "shortcuts": [
+    {
+      "name": "Articles",
+      "short_name": "Articles",
+      "description": "Voir les derniers articles",
+      "url": "/articles.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Tutoriels",
+      "short_name": "Tutoriels",
+      "description": "Guides et stratégies",
+      "url": "/tutoriel.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
