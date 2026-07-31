@@ -80,8 +80,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Réinitialiser le formulaire
             commentContent.value = '';
             
-            // Recharger les commentaires
-            loadComments(articleId);
+            // Recharger les commentaires avec l'ID utilisateur
+            loadComments(articleId, user.id);
             
             alert('Commentaire publié avec succès !');
 
@@ -111,8 +111,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 commentForm.classList.add('hidden');
             }
 
-            // Charger les commentaires
-            loadComments(articleId);
+            // Charger les commentaires avec l'ID utilisateur connecté
+            const userId = session ? session.user.id : null;
+            loadComments(articleId, userId);
 
         } catch (error) {
             console.error('Erreur de vérification:', error);
@@ -120,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Charger les commentaires de l'article
-    async function loadComments(articleId) {
+    async function loadComments(articleId, currentUserId = null) {
         try {
             const { data: comments, error } = await supabaseClient
                 .from('comments')
@@ -147,6 +148,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const username = profile.username || profile.full_name || 'Utilisateur';
                 const avatarUrl = profile.avatar_url || `https://via.placeholder.com/40?text=${username.charAt(0).toUpperCase()}`;
                 
+                // Vérifier si l'utilisateur connecté est l'auteur du commentaire
+                const isAuthor = currentUserId && comment.user_id === currentUserId;
+                
                 return `
                     <div class="comment-item" data-comment-id="${comment.id}">
                         <div class="comment-header">
@@ -158,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                         <div class="comment-content">${escapeHtml(comment.content)}</div>
                         <div class="comment-actions">
-                            <button class="comment-action-btn" onclick="deleteComment('${comment.id}')">Supprimer</button>
+                            ${isAuthor ? `<button class="comment-action-btn" onclick="deleteComment('${comment.id}')">Supprimer</button>` : ''}
                         </div>
                     </div>
                 `;
@@ -192,8 +196,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (error) throw error;
 
-            // Recharger les commentaires
-            loadComments(articleId);
+            // Recharger les commentaires avec l'ID utilisateur
+            loadComments(articleId, user.id);
             
             alert('Commentaire supprimé avec succès !');
 
