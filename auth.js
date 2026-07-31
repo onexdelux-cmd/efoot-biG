@@ -278,6 +278,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
+            // Test de connexion Supabase
+            console.log('Test de connexion Supabase...');
+            const { data: testData, error: testError } = await supabaseClient.from('profiles').select('count').limit(1);
+            console.log('Test connexion Supabase:', { testData, testError });
+
             // Vérifier si l'utilisateur existe déjà via la fonction RPC
             console.log('Vérification si l\'utilisateur existe déjà via RPC pour email:', email);
             const { data: userExists, error: checkError } = await supabaseClient.rpc('check_user_exists', {
