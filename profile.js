@@ -61,42 +61,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
 
-                // Supprimer les commentaires de l'utilisateur
-                const { error: commentsError } = await supabaseClient
-                    .from('comments')
-                    .delete()
-                    .eq('user_id', user.id);
+                console.log('Tentative de suppression du compte utilisateur:', user.id);
 
-                if (commentsError) {
-                    console.error('Erreur suppression commentaires:', commentsError);
-                }
-
-                // Supprimer le profil
-                const { error: profileError } = await supabaseClient
-                    .from('profiles')
-                    .delete()
-                    .eq('id', user.id);
-
-                if (profileError) {
-                    console.error('Erreur suppression profil:', profileError);
-                }
-
-                // Supprimer le compte auth via l'API admin
-                const { error: authError } = await supabaseClient.rpc('delete_user', {
+                // Supprimer le compte via la fonction RPC améliorée
+                const { data: deleteResult, error: authError } = await supabaseClient.rpc('delete_user', {
                     user_id: user.id
                 });
 
+                console.log('Résultat suppression:', { deleteResult, authError });
+
                 if (authError) {
                     console.error('Erreur suppression compte auth:', authError);
-                    // Si la RPC échoue, essayer avec l'API directe
-                    // Note: Ceci nécessite les permissions admin
-                    showError('Erreur lors de la suppression du compte. Contactez le support.');
+                    showError('Erreur lors de la suppression du compte: ' + authError.message);
+                    return;
+                }
+
+                if (deleteResult && deleteResult.success === false) {
+                    console.error('Échec suppression:', deleteResult.message);
+                    showError('Erreur lors de la suppression: ' + deleteResult.message);
                     return;
                 }
 
                 // Déconnexion et redirection
                 await supabaseClient.auth.signOut();
-                alert('Votre compte a été supprimé avec succès.');
+                alert('Votre compte a été supprimé avec succès. ' + (deleteResult?.message || ''));
                 window.location.href = 'index.html';
 
             } catch (error) {
