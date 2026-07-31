@@ -23,14 +23,18 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const { data: { user } } = await supabaseClient.auth.getUser();
             
+            console.log('Utilisateur connecté:', user ? user.email : 'non connecté');
+            console.log('Email admin attendu:', ADMIN_EMAIL);
+            
             if (!user) {
+                console.log('⛔ Utilisateur non connecté');
                 showAccessDenied();
                 return false;
             }
             
             // Vérifier si l'email correspond à l'admin
             if (user.email !== ADMIN_EMAIL) {
-                console.log('Accès refusé: email non admin', user.email);
+                console.log('⛔ Accès refusé: email non admin', user.email);
                 showAccessDenied();
                 return false;
             }
