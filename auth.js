@@ -278,6 +278,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
+            // Vérifier si l'email existe déjà dans la table profiles
+            console.log('Vérification si l\'email existe déjà dans profiles...');
+            const { data: existingProfile, error: profileError } = await supabaseClient
+                .from('profiles')
+                .select('email')
+                .eq('email', email)
+                .single();
+
+            if (existingProfile) {
+                console.log('Email déjà existant dans profiles');
+                showMessage('Cet email est déjà inscrit. Connectez-vous ou utilisez un autre email.', 'error');
+                return;
+            }
+
             console.log('Appel à Supabase pour inscription...');
             const { data, error } = await supabaseClient.auth.signUp({
                 email: email,
