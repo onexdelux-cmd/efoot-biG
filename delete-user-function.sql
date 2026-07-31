@@ -15,15 +15,15 @@ DECLARE
     profile_count INTEGER;
 BEGIN
     -- Supprimer les commentaires de l'utilisateur
-    DELETE FROM public.comments WHERE user_id = user_id;
+    DELETE FROM public.comments WHERE user_id = delete_user.user_id;
     GET DIAGNOSTICS comments_count = ROW_COUNT;
     
     -- Supprimer le profil de l'utilisateur
-    DELETE FROM public.profiles WHERE id = user_id;
+    DELETE FROM public.profiles WHERE id = delete_user.user_id;
     GET DIAGNOSTICS profile_count = ROW_COUNT;
     
     -- Supprimer l'utilisateur de la table auth.users
-    DELETE FROM auth.users WHERE id = user_id;
+    DELETE FROM auth.users WHERE id = delete_user.user_id;
     
     -- Vérifier si la suppression a réussi
     IF NOT FOUND THEN
