@@ -1,6 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM chargé, initialisation...');
+    console.log('Initialisation du système d\'authentification...');
     
+    // Initialiser le logger d'activité
+    let activityLogger = null;
+    
+    function initActivityLogger() {
+        if (window.supabaseClient) {
+            activityLogger = new ActivityLogger(window.supabaseClient);
+            console.log('Logger d\'activité initialisé');
+        }
+    }
+
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
     const showRegister = document.getElementById('showRegister');
@@ -28,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function waitForSupabase() {
         if (window.supabaseClient) {
             console.log('✅ SupabaseClient disponible, initialisation terminée');
+            initActivityLogger(); // Initialiser le logger d'activité
             checkAuthStatus();
         } else {
             console.log('⏳ Attente de SupabaseClient...');
@@ -91,11 +102,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (error) throw error;
 
-            showMessage('Connexion réussie ! Redirection...', 'success');
-            
-            setTimeout(() => {
-                window.location.href = 'profile.html';
-            }, 1500);
+            if (data.session) {
+                console.log('✅ Connexion réussie');
+                showMessage('Connexion réussie ! Redirection...', 'success');
+                
+                // Logger la connexion
+                if (activityLogger) {
+                    activityLogger.logLogin();
+                }
+                
+                setTimeout(() => {
+                    window.location.href = 'profile.html';
+                }, 1500);
+            } else {
+                console.log('⚠️ Session non créée');
+                showMessage('Connexion réussie mais session non créée', 'warning');
+            }
 
         } catch (error) {
             console.error('Erreur de connexion:', error);
@@ -147,6 +169,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (error) throw error;
+
+            // Logger la demande de réinitialisation
+            if (activityLogger) {
+                activityLogger.logPasswordReset();
+            }
 
             showMessage('Lien de réinitialisation envoyé ! Vérifiez votre email.', 'success');
             setTimeout(() => {
@@ -276,6 +303,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw error;
             }
 
+            // Logger l'inscription
+            if (activityLogger) {
+                activityLogger.logRegister(email);
+            }
+
             if (data.user && !data.session) {
                 showMessage('Inscription réussie ! Vérifiez votre email pour confirmer votre compte.', 'info');
             } else {
@@ -290,22 +322,6 @@ document.addEventListener('DOMContentLoaded', function() {
             showMessage('Erreur d\'inscription: ' + error.message, 'error');
         }
     });
-
-    // Vérifier le statut d'authentification
-    async function checkAuthStatus() {
-        try {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            
-            if (session) {
-                showMessage('Vous êtes déjà connecté. Redirection...', 'info');
-                setTimeout(() => {
-                    window.location.href = 'profile.html';
-                }, 1500);
-            }
-        } catch (error) {
-            console.error('Erreur de vérification:', error);
-        }
-    }
 
     // Afficher un message
     function showMessage(message, type) {
