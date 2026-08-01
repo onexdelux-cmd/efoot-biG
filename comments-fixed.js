@@ -121,9 +121,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 commentsList.innerHTML = '<p class="no-comments">Aucun commentaire pour le moment. Soyez le premier !</p>';
                 return;
             }
+
+            // Récupérer les profils des utilisateurs
+            const userIds = [...new Set(comments.map(c => c.user_id))];
+            const { data: profiles } = await supabaseClient
+                .from('profiles')
+                .select('id, username, full_name, avatar_url')
+                .in('id', userIds);
+
+            const profilesMap = {};
+            if (profiles) {
+                profiles.forEach(profile => {
+                    profilesMap[profile.id] = profile;
+                });
+            }
+
             commentsList.innerHTML = comments.map(comment => {
-                const username = 'Utilisateur';
-                const avatarUrl = `https://via.placeholder.com/40?text=U`;
+                const profile = profilesMap[comment.user_id] || {};
+                const username = profile.username || profile.full_name || 'Utilisateur';
+                const avatarUrl = profile.avatar_url || `https://via.placeholder.com/40?text=${username.charAt(0).toUpperCase()}`;
                 
                 // Vérifier si l'utilisateur connecté est l'auteur du commentaire
                 const isAuthor = currentUserId && comment.user_id === currentUserId;
