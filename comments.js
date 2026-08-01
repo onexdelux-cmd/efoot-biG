@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     commentContent.value = '';
                     
                     // Recharger les commentaires avec l'ID utilisateur
-                    loadComments(articleId, user.id, commentsList);
+                    window.loadComments(articleId, user.id, commentsList);
                     
                     alert('Commentaire publié avec succès !');
 
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Charger les commentaires avec l'ID utilisateur connecté
             const userId = session ? session.user.id : null;
-            loadComments(articleId, userId, commentsList);
+            window.loadComments(articleId, userId, commentsList);
 
         } catch (error) {
             console.error('Erreur de vérification:', error);
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Charger les commentaires de l'article
-    async function loadComments(articleId, currentUserId = null, commentsList) {
+    window.loadComments = async function(articleId, currentUserId = null, commentsList) {
         try {
             console.log('📝 Chargement des commentaires pour article:', articleId);
             
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const commentsSection = document.querySelector(`[data-article-id="${articleId}"]`);
             if (commentsSection) {
                 const commentsList = commentsSection.querySelector('.comments-list');
-                loadComments(articleId, user.id, commentsList);
+                window.loadComments(articleId, user.id, commentsList);
             }
             
             alert('Commentaire supprimé avec succès !');
