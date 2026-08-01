@@ -122,6 +122,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Charger les commentaires de l'article
     async function loadComments(articleId, currentUserId = null, commentsList) {
         try {
+            console.log('📝 Chargement des commentaires pour article:', articleId);
+            
             const { data: comments, error } = await supabaseClient
                 .from('comments')
                 .select(`
@@ -135,13 +137,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 .eq('article_id', articleId)
                 .order('created_at', { ascending: false });
 
+            console.log('📊 Résultat requête commentaires:', { comments, error });
+
             if (error) throw error;
 
             if (!comments || comments.length === 0) {
+                console.log('❌ Aucun commentaire trouvé');
                 commentsList.innerHTML = '<p class="no-comments">Aucun commentaire pour le moment. Soyez le premier !</p>';
                 return;
             }
 
+            console.log('✅ Commentaires chargés:', comments.length);
             commentsList.innerHTML = comments.map(comment => {
                 const profile = comment.profiles || {};
                 const username = profile.username || profile.full_name || 'Utilisateur';
