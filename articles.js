@@ -2,6 +2,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterButtons = document.querySelectorAll('.filter-btn');
     const articles = document.querySelectorAll('.article-full');
     
+    // S'assurer que tous les articles sont visibles au chargement
+    articles.forEach(article => {
+        article.style.display = 'block';
+    });
+    
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
             // Remove active class from all buttons
