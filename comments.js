@@ -126,14 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const { data: comments, error } = await supabaseClient
                 .from('comments')
-                .select(`
-                    *,
-                    profiles:user_id (
-                        username,
-                        avatar_url,
-                        full_name
-                    )
-                `)
+                .select('*')
                 .eq('article_id', articleId)
                 .order('created_at', { ascending: false });
 
@@ -149,9 +142,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             console.log('✅ Commentaires chargés:', comments.length);
             commentsList.innerHTML = comments.map(comment => {
-                const profile = comment.profiles || {};
-                const username = profile.username || profile.full_name || 'Utilisateur';
-                const avatarUrl = profile.avatar_url || `https://via.placeholder.com/40?text=${username.charAt(0).toUpperCase()}`;
+                const username = 'Utilisateur';
+                const avatarUrl = `https://via.placeholder.com/40?text=U`;
                 
                 // Vérifier si l'utilisateur connecté est l'auteur du commentaire
                 const isAuthor = currentUserId && comment.user_id === currentUserId;
