@@ -1,18 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Initialisation du système de commentaires...');
-    
     // Gérer chaque section de commentaires indépendamment
     const commentsSections = document.querySelectorAll('.comments-section');
-    
-    console.log('Nombre de sections de commentaires:', commentsSections.length);
     
     // Attendre que Supabase soit initialisé
     function waitForSupabase() {
         if (window.supabaseClient) {
-            console.log('✅ SupabaseClient disponible pour commentaires');
             initializeCommentsSections();
         } else {
-            console.log('⏳ Attente de SupabaseClient pour commentaires...');
             setTimeout(waitForSupabase, 100);
         }
     }
@@ -27,8 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('ID d\'article non trouvé dans la section');
                 return;
             }
-
-            console.log('Initialisation des commentaires pour l\'article:', articleId);
             
             const commentForm = commentsSection.querySelector('.comment-form');
             const commentAuthMessage = commentsSection.querySelector('.comment-auth-message');
@@ -93,19 +85,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function checkAuthAndLoadComments(articleId, commentAuthMessage, commentForm, commentsList) {
         try {
-            console.log('🔍 Vérification de l\'authentification pour commentaires...');
             const { data: { session } } = await supabaseClient.auth.getSession();
-            
-            console.log('Session:', session ? '✅ Utilisateur connecté' : '❌ Utilisateur non connecté');
             
             if (session) {
                 // Utilisateur connecté - afficher le formulaire
-                console.log('Utilisateur connecté - formulaire visible');
                 if (commentAuthMessage) commentAuthMessage.classList.add('hidden');
                 if (commentForm) commentForm.classList.remove('hidden');
             } else {
                 // Utilisateur non connecté - cacher le formulaire et afficher le message
-                console.log('Utilisateur non connecté - afficher message et cacher formulaire');
                 if (commentAuthMessage) commentAuthMessage.classList.remove('hidden');
                 if (commentForm) commentForm.classList.add('hidden');
             }
@@ -122,25 +109,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Charger les commentaires de l'article
     window.loadComments = async function(articleId, currentUserId = null, commentsList) {
         try {
-            console.log('📝 Chargement des commentaires pour article:', articleId);
-            
             const { data: comments, error } = await supabaseClient
                 .from('comments')
                 .select('*')
                 .eq('article_id', articleId)
                 .order('created_at', { ascending: false });
 
-            console.log('📊 Résultat requête commentaires:', { comments, error });
-
             if (error) throw error;
 
             if (!comments || comments.length === 0) {
-                console.log('❌ Aucun commentaire trouvé');
                 commentsList.innerHTML = '<p class="no-comments">Aucun commentaire pour le moment. Soyez le premier !</p>';
                 return;
             }
-
-            console.log('✅ Commentaires chargés:', comments.length);
             commentsList.innerHTML = comments.map(comment => {
                 const username = 'Utilisateur';
                 const avatarUrl = `https://via.placeholder.com/40?text=U`;
