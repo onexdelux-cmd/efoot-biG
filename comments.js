@@ -1,35 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Initialisation du système de commentaires...');
     
-    const commentForm = document.getElementById('commentForm');
-    const commentAuthMessage = document.getElementById('commentAuthMessage');
-    const commentContent = document.getElementById('commentContent');
-    const commentsList = document.getElementById('commentsList');
-    const commentsSection = document.querySelector('.comments-section');
+    // Gérer chaque section de commentaires indépendamment
+    const commentsSections = document.querySelectorAll('.comments-section');
     
-    console.log('Éléments commentaires:', {
-        commentForm: !!commentForm,
-        commentAuthMessage: !!commentAuthMessage,
-        commentContent: !!commentContent,
-        commentsList: !!commentsList,
-        commentsSection: !!commentsSection
-    });
+    console.log('Nombre de sections de commentaires:', commentsSections.length);
     
-    // Récupérer l'ID de l'article
-    const articleId = commentsSection ? commentsSection.dataset.articleId : null;
-    
-    if (!articleId) {
-        console.error('ID d\'article non trouvé');
-        return;
-    }
-
-    console.log('ID de l\'article:', articleId);
-
     // Attendre que Supabase soit initialisé
     function waitForSupabase() {
         if (window.supabaseClient) {
             console.log('✅ SupabaseClient disponible pour commentaires');
-            checkAuthAndLoadComments();
+            initializeCommentsSections();
         } else {
             console.log('⏳ Attente de SupabaseClient pour commentaires...');
             setTimeout(waitForSupabase, 100);
@@ -38,61 +19,79 @@ document.addEventListener('DOMContentLoaded', function() {
     
     waitForSupabase();
 
-    // Gestion du formulaire de commentaire
-    commentForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const content = commentContent.value.trim();
-        
-        if (!content) {
-            alert('Veuillez entrer un commentaire');
-            return;
-        }
-
-        try {
-            const { data: { user } } = await supabaseClient.auth.getUser();
+    function initializeCommentsSections() {
+        commentsSections.forEach(commentsSection => {
+            const articleId = commentsSection.dataset.articleId;
             
-            if (!user) {
-                alert('Vous devez être connecté pour commenter');
+            if (!articleId) {
+                console.error('ID d\'article non trouvé dans la section');
                 return;
             }
 
-            // Récupérer le profil de l'utilisateur
-            const { data: profile } = await supabaseClient
-                .from('profiles')
-                .select('*')
-                .eq('id', user.id)
-                .single();
-
-            // Ajouter le commentaire
-            const { data: comment, error } = await supabaseClient
-                .from('comments')
-                .insert({
-                    user_id: user.id,
-                    article_id: articleId,
-                    content: content
-                })
-                .select()
-                .single();
-
-            if (error) throw error;
-
-            // Réinitialiser le formulaire
-            commentContent.value = '';
+            console.log('Initialisation des commentaires pour l\'article:', articleId);
             
-            // Recharger les commentaires avec l'ID utilisateur
-            loadComments(articleId, user.id);
-            
-            alert('Commentaire publié avec succès !');
+            const commentForm = commentsSection.querySelector('.comment-form');
+            const commentAuthMessage = commentsSection.querySelector('.comment-auth-message');
+            const commentContent = commentsSection.querySelector('.comment-content');
+            const commentsList = commentsSection.querySelector('.comments-list');
 
-        } catch (error) {
-            console.error('Erreur lors de la publication du commentaire:', error);
-            alert('Erreur lors de la publication du commentaire: ' + error.message);
-        }
-    });
+            if (!commentForm || !commentsList) {
+                console.error('Éléments manquants dans la section de commentaires');
+                return;
+            }
 
-    // Vérifier l'authentification et charger les commentaires
-    async function checkAuthAndLoadComments() {
+            // Gestion du formulaire de commentaire
+            commentForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const content = commentContent.value.trim();
+                
+                if (!content) {
+                    alert('Veuillez entrer un commentaire');
+                    return;
+                }
+
+                try {
+                    const { data: { user } } = await supabaseClient.auth.getUser();
+                    
+                    if (!user) {
+                        alert('Vous devez être connecté pour commenter');
+                        return;
+                    }
+
+                    // Ajouter le commentaire
+                    const { data: comment, error } = await supabaseClient
+                        .from('comments')
+                        .insert({
+                            user_id: user.id,
+                            article_id: articleId,
+                            content: content
+                        })
+                        .select()
+                        .single();
+
+                    if (error) throw error;
+
+                    // Réinitialiser le formulaire
+                    commentContent.value = '';
+                    
+                    // Recharger les commentaires avec l'ID utilisateur
+                    loadComments(articleId, user.id, commentsList);
+                    
+                    alert('Commentaire publié avec succès !');
+
+                } catch (error) {
+                    console.error('Erreur lors de la publication du commentaire:', error);
+                    alert('Erreur lors de la publication du commentaire: ' + error.message);
+                }
+            });
+
+            // Vérifier l'authentification et charger les commentaires
+            checkAuthAndLoadComments(articleId, commentAuthMessage, commentForm, commentsList);
+        });
+    }
+
+    async function checkAuthAndLoadComments(articleId, commentAuthMessage, commentForm, commentsList) {
         try {
             console.log('🔍 Vérification de l\'authentification pour commentaires...');
             const { data: { session } } = await supabaseClient.auth.getSession();
@@ -100,20 +99,20 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Session:', session ? '✅ Utilisateur connecté' : '❌ Utilisateur non connecté');
             
             if (session) {
-                // Utilisateur connecté - afficher le formulaire (déjà visible par défaut)
+                // Utilisateur connecté - afficher le formulaire
                 console.log('Utilisateur connecté - formulaire visible');
-                commentAuthMessage.classList.add('hidden');
-                commentForm.classList.remove('hidden');
+                if (commentAuthMessage) commentAuthMessage.classList.add('hidden');
+                if (commentForm) commentForm.classList.remove('hidden');
             } else {
                 // Utilisateur non connecté - cacher le formulaire et afficher le message
                 console.log('Utilisateur non connecté - afficher message et cacher formulaire');
-                commentAuthMessage.classList.remove('hidden');
-                commentForm.classList.add('hidden');
+                if (commentAuthMessage) commentAuthMessage.classList.remove('hidden');
+                if (commentForm) commentForm.classList.add('hidden');
             }
 
             // Charger les commentaires avec l'ID utilisateur connecté
             const userId = session ? session.user.id : null;
-            loadComments(articleId, userId);
+            loadComments(articleId, userId, commentsList);
 
         } catch (error) {
             console.error('Erreur de vérification:', error);
@@ -121,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Charger les commentaires de l'article
-    async function loadComments(articleId, currentUserId = null) {
+    async function loadComments(articleId, currentUserId = null, commentsList) {
         try {
             const { data: comments, error } = await supabaseClient
                 .from('comments')
@@ -162,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                         <div class="comment-content">${escapeHtml(comment.content)}</div>
                         <div class="comment-actions">
-                            ${isAuthor ? `<button class="comment-action-btn" onclick="deleteComment('${comment.id}')">Supprimer</button>` : ''}
+                            ${isAuthor ? `<button class="comment-action-btn" onclick="deleteComment('${comment.id}', '${articleId}')">Supprimer</button>` : ''}
                         </div>
                     </div>
                 `;
@@ -175,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Supprimer un commentaire
-    window.deleteComment = async function(commentId) {
+    window.deleteComment = async function(commentId, articleId) {
         if (!confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')) {
             return;
         }
@@ -196,8 +195,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (error) throw error;
 
-            // Recharger les commentaires avec l'ID utilisateur
-            loadComments(articleId, user.id);
+            // Trouver la section de commentaires correspondante et recharger
+            const commentsSection = document.querySelector(`[data-article-id="${articleId}"]`);
+            if (commentsSection) {
+                const commentsList = commentsSection.querySelector('.comments-list');
+                loadComments(articleId, user.id, commentsList);
+            }
             
             alert('Commentaire supprimé avec succès !');
 
