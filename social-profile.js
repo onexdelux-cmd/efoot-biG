@@ -175,17 +175,38 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const { data: { user } } = await supabaseClient.auth.getUser();
 
-            // Pour l'instant, ne mettre à jour que les champs de base qui existent
-            const profileData = {
+            // Essayer d'abord avec tous les champs
+            const fullProfileData = {
                 username: document.getElementById('editUsername').value,
                 full_name: document.getElementById('editFullName').value,
+                bio: document.getElementById('editBio').value,
+                favorite_team: document.getElementById('editFavoriteTeam').value,
+                play_style: document.getElementById('editPlayStyle').value,
+                region: document.getElementById('editRegion').value,
                 updated_at: new Date().toISOString()
             };
 
-            const { error } = await supabaseClient
+            let { error } = await supabaseClient
                 .from('profiles')
-                .update(profileData)
+                .update(fullProfileData)
                 .eq('id', user.id);
+
+            // Si erreur de colonne manquante, essayer avec seulement les champs de base
+            if (error && error.message.includes('column')) {
+                console.log('Colonnes manquantes, réessai avec champs de base');
+                const basicProfileData = {
+                    username: document.getElementById('editUsername').value,
+                    full_name: document.getElementById('editFullName').value,
+                    updated_at: new Date().toISOString()
+                };
+
+                const result = await supabaseClient
+                    .from('profiles')
+                    .update(basicProfileData)
+                    .eq('id', user.id);
+                
+                error = result.error;
+            }
 
             if (error) throw error;
 
