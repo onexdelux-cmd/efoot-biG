@@ -2,7 +2,7 @@ services:
   - type: web
     name: efootball-red-dimension
     env: static
-    buildCommand: ""
+    buildCommand: "bash build.sh"
     startCommand: ""
     staticPublishPath: .
     envVars:
