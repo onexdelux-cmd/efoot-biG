@@ -79,11 +79,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const level = profile.level || 1;
 
         let mediaContent = '';
-        if (post.media_url) {
+        if (post.image_url) {
             if (post.post_type === 'image') {
-                mediaContent = `<img src="${post.media_url}" alt="Post media" class="post-media">`;
+                mediaContent = `<img src="${post.image_url}" alt="Post media" class="post-media">`;
             } else if (post.post_type === 'video') {
-                mediaContent = `<video src="${post.media_url}" controls class="post-media"></video>`;
+                mediaContent = `<video src="${post.image_url}" controls class="post-media"></video>`;
             }
         }
 
