@@ -6,20 +6,79 @@
 -- ============================================
 
 -- Table profiles (étendue)
-ALTER TABLE public profiles ADD COLUMN IF NOT EXISTS bio TEXT;
-ALTER TABLE public profiles ADD COLUMN IF NOT EXISTS avatar_url TEXT;
-ALTER TABLE public profiles ADD COLUMN IF NOT EXISTS cover_image_url TEXT;
-ALTER TABLE public profiles ADD COLUMN IF NOT EXISTS favorite_team TEXT;
-ALTER TABLE public profiles ADD COLUMN IF NOT EXISTS play_style TEXT;
-ALTER TABLE public profiles ADD COLUMN IF NOT EXISTS region TEXT;
-ALTER TABLE public profiles ADD COLUMN IF NOT EXISTS level INTEGER DEFAULT 1;
-ALTER TABLE public profiles ADD COLUMN IF NOT EXISTS xp INTEGER DEFAULT 0;
-ALTER TABLE public profiles ADD COLUMN IF NOT EXISTS followers_count INTEGER DEFAULT 0;
-ALTER TABLE public profiles ADD COLUMN IF NOT EXISTS following_count INTEGER DEFAULT 0;
-ALTER TABLE public profiles ADD COLUMN IF NOT EXISTS posts_count INTEGER DEFAULT 0;
-ALTER TABLE public profiles ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT FALSE;
-ALTER TABLE public profiles ADD COLUMN IF NOT EXISTS created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now());
-ALTER TABLE public profiles ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now());
+-- Ajouter les colonnes une par une avec vérification
+DO $$
+BEGIN
+    -- Bio
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'bio') THEN
+        ALTER TABLE public profiles ADD COLUMN bio TEXT;
+    END IF;
+    
+    -- Avatar URL
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'avatar_url') THEN
+        ALTER TABLE public profiles ADD COLUMN avatar_url TEXT;
+    END IF;
+    
+    -- Cover Image URL
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'cover_image_url') THEN
+        ALTER TABLE public profiles ADD COLUMN cover_image_url TEXT;
+    END IF;
+    
+    -- Favorite Team
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'favorite_team') THEN
+        ALTER TABLE public profiles ADD COLUMN favorite_team TEXT;
+    END IF;
+    
+    -- Play Style
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'play_style') THEN
+        ALTER TABLE public profiles ADD COLUMN play_style TEXT;
+    END IF;
+    
+    -- Region
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'region') THEN
+        ALTER TABLE public profiles ADD COLUMN region TEXT;
+    END IF;
+    
+    -- Level
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'level') THEN
+        ALTER TABLE public profiles ADD COLUMN level INTEGER DEFAULT 1;
+    END IF;
+    
+    -- XP
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'xp') THEN
+        ALTER TABLE public profiles ADD COLUMN xp INTEGER DEFAULT 0;
+    END IF;
+    
+    -- Followers Count
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'followers_count') THEN
+        ALTER TABLE public profiles ADD COLUMN followers_count INTEGER DEFAULT 0;
+    END IF;
+    
+    -- Following Count
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'following_count') THEN
+        ALTER TABLE public profiles ADD COLUMN following_count INTEGER DEFAULT 0;
+    END IF;
+    
+    -- Posts Count
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'posts_count') THEN
+        ALTER TABLE public profiles ADD COLUMN posts_count INTEGER DEFAULT 0;
+    END IF;
+    
+    -- Is Verified
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'is_verified') THEN
+        ALTER TABLE public profiles ADD COLUMN is_verified BOOLEAN DEFAULT FALSE;
+    END IF;
+    
+    -- Created At
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'created_at') THEN
+        ALTER TABLE public profiles ADD COLUMN created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now());
+    END IF;
+    
+    -- Updated At
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'updated_at') THEN
+        ALTER TABLE public profiles ADD COLUMN updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now());
+    END IF;
+END $$;
 
 -- ============================================
 -- TABLES SOCIAL (FEED, FOLLOWERS, ETC)
