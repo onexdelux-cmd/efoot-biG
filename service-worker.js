@@ -73,7 +73,13 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('fetch', function(event) {
     const url = event.request.url;
     
-    // Stratégie Network First pour les fichiers HTML et JS critiques
+    // Ne pas mettre en cache les requêtes CDN externes
+    if (url.includes('cdn.jsdelivr.net') || url.includes('joyful.to')) {
+        event.respondWith(fetch(event.request));
+        return;
+    }
+    
+    // Stratégie Network First pour les fichiers HTML et JS critiques locaux
     if (url.includes('.html') || url.includes('.js') || url.includes('css')) {
         event.respondWith(
             fetch(event.request)
