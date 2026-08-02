@@ -175,24 +175,12 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const { data: { user } } = await supabaseClient.auth.getUser();
 
+            // Pour l'instant, ne mettre à jour que les champs de base qui existent
             const profileData = {
                 username: document.getElementById('editUsername').value,
                 full_name: document.getElementById('editFullName').value,
                 updated_at: new Date().toISOString()
             };
-
-            // Ajouter les champs optionnels seulement s'ils ont une valeur
-            const bioValue = document.getElementById('editBio').value;
-            if (bioValue) profileData.bio = bioValue;
-
-            const favoriteTeamValue = document.getElementById('editFavoriteTeam').value;
-            if (favoriteTeamValue) profileData.favorite_team = favoriteTeamValue;
-
-            const playStyleValue = document.getElementById('editPlayStyle').value;
-            if (playStyleValue) profileData.play_style = playStyleValue;
-
-            const regionValue = document.getElementById('editRegion').value;
-            if (regionValue) profileData.region = regionValue;
 
             const { error } = await supabaseClient
                 .from('profiles')
