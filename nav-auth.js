@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', async function() {
             logoutLink.id = 'logoutBtn';
             logoutLink.className = 'nav-link';
             logoutLink.textContent = 'Déconnexion';
-            logoutLink.addEventListener('click', handleLogout);
             navLinks.appendChild(logoutLink);
         }
     }
@@ -74,13 +73,17 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    async function handleLogout(e) {
-        e.preventDefault();
-        try {
-            await supabaseClient.auth.signOut();
-            window.location.href = 'index.html';
-        } catch (error) {
-            console.error('Erreur de déconnexion:', error);
+    // Délégation d'événements pour le bouton de déconnexion
+    navLinks.addEventListener('click', async function(e) {
+        const logoutBtn = e.target.closest('#logoutBtn');
+        if (logoutBtn) {
+            e.preventDefault();
+            try {
+                await supabaseClient.auth.signOut();
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Erreur de déconnexion:', error);
+            }
         }
-    }
+    });
 });
