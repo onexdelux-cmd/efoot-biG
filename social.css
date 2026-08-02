@@ -200,11 +200,25 @@
 }
 
 /* Create Post Section */
-.create-post-section {
+.create-post-card {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     padding: 1.5rem;
-    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.post-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.post-content {
+    color: var(--white);
+    margin-bottom: 1rem;
+    line-height: 1.6;
 }
 
 .post-input {
@@ -245,6 +259,18 @@
     background: rgba(255, 255, 255, 0.2);
 }
 
+.post-image-preview {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+    margin: 1rem 0;
+    object-fit: cover;
+}
+
+.hidden {
+    display: none;
+}
+
 /* User Posts */
 .user-posts {
     display: flex;
@@ -256,6 +282,27 @@
     text-align: center;
     color: rgba(255, 255, 255, 0.6);
     padding: 2rem;
+}
+
+.post-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.post-card .post-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.post-card .post-content {
+    color: var(--white);
+    margin-bottom: 1rem;
+    line-height: 1.6;
 }
 
 /* Achievements Grid */

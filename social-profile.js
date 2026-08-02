@@ -224,37 +224,89 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupPostCreation() {
         const postBtn = document.getElementById('postBtn');
         const postContent = document.getElementById('newPostContent');
+        const postImageUpload = document.getElementById('postImageUpload');
+        const postImagePreview = document.getElementById('postImagePreview');
+        let selectedImage = null;
+
+        // Gestion de la sélection d'image
+        if (postImageUpload) {
+            postImageUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    selectedImage = file;
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        postImagePreview.src = e.target.result;
+                        postImagePreview.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
 
         postBtn.addEventListener('click', async function() {
             const content = postContent.value.trim();
             
-            if (!content) {
-                alert('Veuillez entrer du contenu pour votre post');
+            if (!content && !selectedImage) {
+                alert('Veuillez entrer du contenu ou ajouter une image pour votre post');
                 return;
             }
 
-            await createPost(content);
+            await createPost(content, selectedImage);
         });
     }
 
-    async function createPost(content) {
+    async function createPost(content, imageFile = null) {
         try {
             const { data: { user } } = await supabaseClient.auth.getUser();
 
+            let imageUrl = null;
+            
+            // Upload de l'image si fournie
+            if (imageFile) {
+                const fileName = `${user.id}-post-${Date.now()}`;
+                const { error: uploadError } = await supabaseClient.storage
+                    .from('post-images')
+                    .upload(fileName, imageFile);
+
+                if (uploadError) {
+                    console.error('Erreur upload image:', uploadError);
+                    // Continuer sans image si l'upload échoue
+                } else {
+                    const { data: { publicUrl } } = supabaseClient.storage
+                        .from('post-images')
+                        .getPublicUrl(fileName);
+                    imageUrl = publicUrl;
+                }
+            }
+
+            const postData = {
+                user_id: user.id,
+                content: content || '',
+                post_type: imageUrl ? 'image' : 'text'
+            };
+
+            if (imageUrl) {
+                postData.image_url = imageUrl;
+            }
+
             const { data: post, error } = await supabaseClient
                 .from('posts')
-                .insert({
-                    user_id: user.id,
-                    content: content,
-                    post_type: 'text'
-                })
+                .insert(postData)
                 .select()
                 .single();
 
             if (error) throw error;
 
-            // Réinitialiser le champ de texte
+            // Réinitialiser les champs
             document.getElementById('newPostContent').value = '';
+            if (document.getElementById('postImageUpload')) {
+                document.getElementById('postImageUpload').value = '';
+            }
+            if (document.getElementById('postImagePreview')) {
+                document.getElementById('postImagePreview').classList.add('hidden');
+                document.getElementById('postImagePreview').src = '';
+            }
 
             // Recharger les posts
             loadUserPosts(user.id);
@@ -288,6 +340,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             postsContainer.innerHTML = posts.map(post => `
                 <div class="post-card">
+                    ${post.image_url ? `<img src="${post.image_url}" alt="Post image" class="post-image">` : ''}
                     <div class="post-content">${escapeHtml(post.content)}</div>
                     <div class="post-meta">
                         <span class="post-date">${formatDate(post.created_at)}</span>

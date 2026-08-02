@@ -114,7 +114,9 @@
                     <div class="create-post-section">
                         <textarea id="newPostContent" class="post-input" placeholder="Partagez vos moments eFootball..."></textarea>
                         <div class="post-actions">
-                            <button id="addMediaBtn" class="btn-icon">📷</button>
+                            <input type="file" id="postImageUpload" accept="image/*" style="display: none;">
+                            <button id="addMediaBtn" class="btn-icon" onclick="document.getElementById('postImageUpload').click()">📷</button>
+                            <img id="postImagePreview" class="post-image-preview hidden" alt="Preview">
                             <button id="postBtn" class="btn-primary">Publier</button>
                         </div>
                     </div>
