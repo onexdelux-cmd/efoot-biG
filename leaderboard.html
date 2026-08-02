@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eFootball Red Dimension - Classement</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="social.css">
+    <link rel="stylesheet" href="leaderboard.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e3a8a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="logo.png" alt="eFootball Red Dimension" class="logo-img">
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Accueil</a>
+                <a href="feed.html" class="nav-link">Feed</a>
+                <a href="leaderboard.html" class="nav-link active">Classement</a>
+                <a href="communities.html" class="nav-link">Communautés</a>
+                <a href="profile.html" class="nav-link">Mon Profil</a>
+                <a href="#" id="logoutBtn" class="nav-link">Déconnexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="leaderboard-header">
+            <h1>🏆 Classement Mondial</h1>
+            <p>Les meilleurs joueurs d'eFootball 2026</p>
+        </div>
+
+        <!-- Filtres du classement -->
+        <div class="leaderboard-filters">
+            <button class="filter-btn active" data-type="global">🌍 Mondial</button>
+            <button class="filter-btn" data-type="regional">🗺️ Régional</button>
+            <button class="filter-btn" data-type="team">⚽ Par équipe</button>
+            <button class="filter-btn" data-type="weekly">📅 Hebdomadaire</button>
+            <button class="filter-btn" data-type="monthly">📆 Mensuel</button>
+        </div>
+
+        <!-- Top 3 Podium -->
+        <div class="podium-section">
+            <div class="podium">
+                <div class="podium-place second">
+                    <div class="podium-avatar">
+                        <img id="secondAvatar" src="" alt="2ème">
+                        <span class="podium-rank">2</span>
+                    </div>
+                    <h3 id="secondUsername">-</h3>
+                    <p id="secondScore">0 pts</p>
+                </div>
+                <div class="podium-place first">
+                    <div class="podium-avatar">
+                        <img id="firstAvatar" src="" alt="1er">
+                        <span class="podium-rank">1</span>
+                        <span class="crown">👑</span>
+                    </div>
+                    <h3 id="firstUsername">-</h3>
+                    <p id="firstScore">0 pts</p>
+                </div>
+                <div class="podium-place third">
+                    <div class="podium-avatar">
+                        <img id="thirdAvatar" src="" alt="3ème">
+                        <span class="podium-rank">3</span>
+                    </div>
+                    <h3 id="thirdUsername">-</h3>
+                    <p id="thirdScore">0 pts</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liste des classements -->
+        <div class="leaderboard-list">
+            <div class="leaderboard-table">
+                <div class="table-header">
+                    <span class="col-rank">Rang</span>
+                    <span class="col-player">Joueur</span>
+                    <span class="col-stats">Stats</span>
+                    <span class="col-score">Points</span>
+                </div>
+                <div id="leaderboardRows" class="table-body">
+                    <div class="loading-rows">
+                        <p>Chargement du classement...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistiques personnelles -->
+        <div class="personal-stats-section">
+            <h2>Vos Statistiques</h2>
+            <div class="personal-stats">
+                <div class="stat-card">
+                    <h3>Votre Rang</h3>
+                    <p id="userRank" class="stat-value">-</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Vos Points</h3>
+                    <p id="userScore" class="stat-value">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Matchs Joués</h3>
+                    <p id="userMatches" class="stat-value">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Taux de Victoire</h3>
+                    <p id="userWinRate" class="stat-value">0%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 eFootball Red Dimension. Tous droits réservés.</p>
+        <div class="footer-links">
+            <a href="legal.html">Politique de confidentialité</a>
+            <a href="legal.html">Conditions d'utilisation</a>
+            <a href="#">Contact</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js?v=1"></script>
+    <script src="leaderboard.js?v=1"></script>
+    <script src="nav-auth.js?v=1"></script>
+</body>
+</html>

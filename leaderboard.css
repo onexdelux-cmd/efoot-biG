@@ -1,0 +1,340 @@
+/* Styles pour le leaderboard eFootball */
+
+/* Leaderboard Header */
+.leaderboard-header {
+    text-align: center;
+    color: var(--white);
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+}
+
+.leaderboard-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.leaderboard-header p {
+    font-size: 1.1rem;
+    opacity: 0.8;
+}
+
+/* Leaderboard Filters */
+.leaderboard-filters {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+}
+
+.leaderboard-filters .filter-btn {
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: var(--white);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.leaderboard-filters .filter-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.leaderboard-filters .filter-btn.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+}
+
+/* Podium Section */
+.podium-section {
+    margin-bottom: 4rem;
+}
+
+.podium {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.podium-place {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.podium-place.first {
+    order: 2;
+    z-index: 10;
+}
+
+.podium-place.second {
+    order: 1;
+}
+
+.podium-place.third {
+    order: 3;
+}
+
+.podium-avatar {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid var(--white);
+    margin-bottom: 1rem;
+    background: var(--white);
+}
+
+.podium-place.first .podium-avatar {
+    width: 120px;
+    height: 120px;
+    border-color: #ffd700;
+}
+
+.podium-place.second .podium-avatar {
+    border-color: #c0c0c0;
+}
+
+.podium-place.third .podium-avatar {
+    border-color: #cd7f32;
+}
+
+.podium-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.podium-rank {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e3a8a;
+    color: var(--white);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.crown {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+}
+
+.podium-place h3 {
+    color: var(--white);
+    margin: 0.5rem 0 0.25rem 0;
+    font-size: 1.1rem;
+}
+
+.podium-place p {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Leaderboard List */
+.leaderboard-list {
+    margin-bottom: 4rem;
+}
+
+.leaderboard-table {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table-header {
+    display: grid;
+    grid-template-columns: 60px 1fr 200px 120px;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+    color: var(--white);
+}
+
+.table-body {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.leaderboard-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 200px 120px;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    align-items: center;
+    transition: background 0.3s ease;
+}
+
+.leaderboard-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.leaderboard-row.current-user {
+    background: rgba(59, 130, 246, 0.2);
+    border-left: 3px solid #3b82f6;
+}
+
+.col-rank {
+    font-weight: bold;
+    color: var(--white);
+    text-align: center;
+}
+
+.col-player {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.player-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.player-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.player-name {
+    color: var(--white);
+    font-weight: 500;
+}
+
+.player-level {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.col-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.col-score {
+    font-weight: bold;
+    color: #3b82f6;
+    text-align: right;
+}
+
+.loading-rows {
+    padding: 2rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Personal Stats Section */
+.personal-stats-section {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.personal-stats-section h2 {
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.personal-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.personal-stats .stat-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.personal-stats .stat-card h3 {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+}
+
+.personal-stats .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .leaderboard-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .leaderboard-filters {
+        gap: 0.5rem;
+    }
+
+    .leaderboard-filters .filter-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .podium {
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .podium-avatar {
+        width: 70px;
+        height: 70px;
+    }
+
+    .podium-place.first .podium-avatar {
+        width: 90px;
+        height: 90px;
+    }
+
+    .table-header,
+    .leaderboard-row {
+        grid-template-columns: 40px 1fr 100px 80px;
+        padding: 0.75rem 1rem;
+    }
+
+    .col-stats {
+        display: none;
+    }
+
+    .personal-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

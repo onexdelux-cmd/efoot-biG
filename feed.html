@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eFootball Red Dimension - Feed Social</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="social.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e3a8a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="logo.png" alt="eFootball Red Dimension" class="logo-img">
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Accueil</a>
+                <a href="feed.html" class="nav-link active">Feed</a>
+                <a href="leaderboard.html" class="nav-link">Classement</a>
+                <a href="communities.html" class="nav-link">Communautés</a>
+                <a href="profile.html" class="nav-link">Mon Profil</a>
+                <a href="#" id="logoutBtn" class="nav-link">Déconnexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="feed-layout">
+            <!-- Sidebar gauche -->
+            <aside class="feed-sidebar">
+                <div class="sidebar-section">
+                    <h3>Navigation</h3>
+                    <ul class="sidebar-nav">
+                        <li><a href="#" class="sidebar-link active">📰 Feed Principal</a></li>
+                        <li><a href="#" class="sidebar-link">🔥 Tendances</a></li>
+                        <li><a href="#" class="sidebar-link">⚽ Matchs en direct</a></li>
+                        <li><a href="#" class="sidebar-link">🏆 Tournois</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>Communautés suggérées</h3>
+                    <div class="suggested-communities">
+                        <div class="community-item">
+                            <span class="community-icon">⚽</span>
+                            <div class="community-info">
+                                <h4>PSG Fans</h4>
+                                <p>12.5K membres</p>
+                            </div>
+                            <button class="btn-small">Rejoindre</button>
+                        </div>
+                        <div class="community-item">
+                            <span class="community-icon">⚽</span>
+                            <div class="community-info">
+                                <h4>Real Madrid</h4>
+                                <p>15.2K membres</p>
+                            </div>
+                            <button class="btn-small">Rejoindre</button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Feed principal -->
+            <main class="feed-main">
+                <div class="feed-header">
+                    <h1>Feed Social</h1>
+                    <p>Découvrez les dernières actualités eFootball</p>
+                </div>
+
+                <!-- Créer un post -->
+                <div class="create-post-card">
+                    <div class="create-post-header">
+                        <img id="currentUserAvatar" src="" alt="Avatar" class="avatar-small">
+                        <textarea id="feedPostContent" class="post-input" placeholder="Partagez vos moments eFootball..."></textarea>
+                    </div>
+                    <div class="post-actions">
+                        <div class="post-options">
+                            <button class="btn-icon">📷</button>
+                            <button class="btn-icon">🎥</button>
+                            <button class="btn-icon">🎮</button>
+                            <button class="btn-icon">📍</button>
+                        </div>
+                        <button id="feedPostBtn" class="btn-primary">Publier</button>
+                    </div>
+                </div>
+
+                <!-- Filtres du feed -->
+                <div class="feed-filters">
+                    <button class="filter-btn active">Tout</button>
+                    <button class="filter-btn">Suivis</button>
+                    <button class="filter-btn">Populaire</button>
+                    <button class="filter-btn">Vidéos</button>
+                    <button class="filter-btn">Screenshots</button>
+                </div>
+
+                <!-- Liste des posts -->
+                <div id="feedPosts" class="feed-posts">
+                    <div class="loading-posts">
+                        <p>Chargement des posts...</p>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Sidebar droite -->
+            <aside class="feed-sidebar-right">
+                <div class="sidebar-section">
+                    <h3>Tendances</h3>
+                    <div class="trending-list">
+                        <div class="trending-item">
+                            <span class="trending-rank">1</span>
+                            <div class="trending-info">
+                                <h4>#FIFAeWorldCup</h4>
+                                <p>125K posts</p>
+                            </div>
+                        </div>
+                        <div class="trending-item">
+                            <span class="trending-rank">2</span>
+                            <div class="trending-info">
+                                <h4>#eFootball2026</h4>
+                                <p>98K posts</p>
+                            </div>
+                        </div>
+                        <div class="trending-item">
+                            <span class="trending-rank">3</span>
+                            <div class="trending-info">
+                                <h4>#TradingTips</h4>
+                                <p>75K posts</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Joueurs suggérés</h3>
+                    <div class="suggested-users">
+                        <div class="user-item">
+                            <img src="https://via.placeholder.com/40" alt="User" class="avatar-small">
+                            <div class="user-info">
+                                <h4>ProPlayer2026</h4>
+                                <p>Top 100 mondial</p>
+                            </div>
+                            <button class="btn-small">Suivre</button>
+                        </div>
+                        <div class="user-item">
+                            <img src="https://via.placeholder.com/40" alt="User" class="avatar-small">
+                            <div class="user-info">
+                                <h4>eFootballMaster</h4>
+                                <p>Expert stratégie</p>
+                            </div>
+                            <button class="btn-small">Suivre</button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 eFootball Red Dimension. Tous droits réservés.</p>
+        <div class="footer-links">
+            <a href="legal.html">Politique de confidentialité</a>
+            <a href="legal.html">Conditions d'utilisation</a>
+            <a href="#">Contact</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js?v=1"></script>
+    <script src="feed.js?v=1"></script>
+    <script src="nav-auth.js?v=1"></script>
+</body>
+</html>

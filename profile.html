@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eFootball Red Dimension - Profil</title>
+    <title>eFootball Red Dimension - Profil Social</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="social.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1e3a8a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 <body>
     <nav class="navbar">
@@ -18,10 +22,10 @@
                 <img src="logo.png" alt="eFootball Red Dimension" class="logo-img">
             </a>
             <div class="nav-links">
-                <a href="index.html" class="nav-link">Newsletter</a>
-                <a href="blog.html" class="nav-link">Blog</a>
-                <a href="tutoriel.html" class="nav-link">Tutoriel</a>
-                <a href="articles.html" class="nav-link">Articles</a>
+                <a href="index.html" class="nav-link">Accueil</a>
+                <a href="feed.html" class="nav-link">Feed</a>
+                <a href="leaderboard.html" class="nav-link">Classement</a>
+                <a href="communities.html" class="nav-link">Communautés</a>
                 <a href="profile.html" class="nav-link active">Mon Profil</a>
                 <a href="#" id="logoutBtn" class="nav-link">Déconnexion</a>
             </div>
@@ -29,11 +33,6 @@
     </nav>
 
     <div class="container">
-        <div class="profile-header">
-            <h1 class="profile-title">Mon Profil</h1>
-            <p class="profile-subtitle">Gérez votre compte et vos préférences</p>
-        </div>
-
         <!-- Message de chargement -->
         <div id="loadingMessage" class="loading-message">
             <p>Chargement de votre profil...</p>
@@ -45,58 +44,201 @@
             <a href="auth.html" class="btn-primary">Se connecter</a>
         </div>
 
-        <!-- Contenu du profil -->
+        <!-- Contenu du profil social -->
         <div id="profileContent" class="profile-content hidden">
-            <div class="profile-card">
-                <div class="profile-avatar-section">
-                    <div class="avatar-container">
-                        <img id="avatarImage" src="" alt="Avatar" class="avatar-image">
-                        <label for="avatarUpload" class="avatar-upload-btn">
+            <!-- Header du profil avec cover -->
+            <div class="profile-cover-section">
+                <div class="cover-image">
+                    <img id="coverImage" src="" alt="Cover" class="cover-img">
+                    <label for="coverUpload" class="cover-upload-btn">
+                        <span>Changer la couverture</span>
+                    </label>
+                    <input type="file" id="coverUpload" accept="image/*" class="hidden">
+                </div>
+                <div class="profile-header-info">
+                    <div class="profile-avatar-large">
+                        <img id="avatarImage" src="" alt="Avatar" class="avatar-large">
+                        <label for="avatarUpload" class="avatar-upload-btn-large">
                             <span>Changer</span>
                         </label>
                         <input type="file" id="avatarUpload" accept="image/*" class="hidden">
                     </div>
-                    <h2 id="usernameDisplay" class="username-display"></h2>
-                    <p id="emailDisplay" class="email-display"></p>
-                </div>
-
-                <div class="profile-form-section">
-                    <form id="profileForm">
-                        <div class="form-group">
-                            <label for="username">Nom d'utilisateur</label>
-                            <input type="text" id="username" name="username" placeholder="Votre nom d'utilisateur">
+                    <div class="profile-info">
+                        <div class="profile-name-section">
+                            <h1 id="usernameDisplay" class="profile-username"></h1>
+                            <span id="verifiedBadge" class="verified-badge hidden">✓</span>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="fullName">Nom complet</label>
-                            <input type="text" id="fullName" name="fullName" placeholder="Votre nom complet">
+                        <p id="bioDisplay" class="profile-bio"></p>
+                        <div class="profile-meta">
+                            <span id="teamDisplay" class="profile-team"></span>
+                            <span id="regionDisplay" class="profile-region"></span>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="bio">Biographie</label>
-                            <textarea id="bio" name="bio" rows="4" placeholder="Parlez-nous de vous..."></textarea>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span id="followersCount" class="stat-number">0</span>
+                            <span class="stat-label">Abonnés</span>
                         </div>
-                    </form>
+                        <div class="stat-item">
+                            <span id="followingCount" class="stat-number">0</span>
+                            <span class="stat-label">Abonnements</span>
+                        </div>
+                        <div class="stat-item">
+                            <span id="postsCount" class="stat-number">0</span>
+                            <span class="stat-label">Posts</span>
+                        </div>
+                        <div class="stat-item">
+                            <span id="levelDisplay" class="stat-number">1</span>
+                            <span class="stat-label">Niveau</span>
+                        </div>
+                    </div>
                     <div class="profile-actions">
-                        <button id="saveProfile" class="btn-primary">Enregistrer les modifications</button>
-                        <button id="logoutBtn" class="btn-secondary">Se déconnecter</button>
-                    </div>
-                    
-                    <div class="danger-zone">
-                        <h3>Zone de danger</h3>
-                        <p>Actions irréversibles sur votre compte</p>
-                        <button id="deleteAccountBtn" class="btn-danger">Supprimer mon compte</button>
+                        <button id="editProfileBtn" class="btn-primary">Modifier le profil</button>
+                        <button id="shareProfileBtn" class="btn-secondary">Partager</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Section des commentaires de l'utilisateur -->
-            <div class="user-comments-section">
-                <h3>Mes commentaires</h3>
-                <div id="userComments" class="user-comments">
-                    <p class="no-comments">Aucun commentaire pour le moment.</p>
+            <!-- Navigation du profil -->
+            <div class="profile-nav">
+                <button class="profile-nav-btn active" data-tab="posts">Posts</button>
+                <button class="profile-nav-btn" data-tab="achievements">Achievements</button>
+                <button class="profile-nav-btn" data-tab="stats">Statistiques</button>
+                <button class="profile-nav-btn" data-tab="communities">Communautés</button>
+            </div>
+
+            <!-- Contenu des onglets -->
+            <div class="profile-tabs">
+                <!-- Onglet Posts -->
+                <div id="postsTab" class="profile-tab active">
+                    <div class="create-post-section">
+                        <textarea id="newPostContent" class="post-input" placeholder="Partagez vos moments eFootball..."></textarea>
+                        <div class="post-actions">
+                            <button id="addMediaBtn" class="btn-icon">📷</button>
+                            <button id="postBtn" class="btn-primary">Publier</button>
+                        </div>
+                    </div>
+                    <div id="userPosts" class="user-posts">
+                        <p class="no-posts">Aucun post pour le moment. Soyez le premier !</p>
+                    </div>
+                </div>
+
+                <!-- Onglet Achievements -->
+                <div id="achievementsTab" class="profile-tab">
+                    <div class="achievements-grid">
+                        <div class="achievement-card locked">
+                            <div class="achievement-icon">🏆</div>
+                            <div class="achievement-info">
+                                <h4>Premier Post</h4>
+                                <p>Publiez votre premier post</p>
+                            </div>
+                        </div>
+                        <div class="achievement-card locked">
+                            <div class="achievement-icon">⭐</div>
+                            <div class="achievement-info">
+                                <h4>100 Likes</h4>
+                                <p>Obtenez 100 likes sur vos posts</p>
+                            </div>
+                        </div>
+                        <div class="achievement-card locked">
+                            <div class="achievement-icon">👥</div>
+                            <div class="achievement-info">
+                                <h4>100 Abonnés</h4>
+                                <p>Atteignez 100 abonnés</p>
+                            </div>
+                        </div>
+                        <div class="achievement-card locked">
+                            <div class="achievement-icon">🎮</div>
+                            <div class="achievement-info">
+                                <h4>Joueur Dévoué</h4>
+                                <p>Jouez 100 matchs</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Onglet Statistiques -->
+                <div id="statsTab" class="profile-tab">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Matchs Joués</h3>
+                            <p id="matchesPlayed" class="stat-value">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Victoires</h3>
+                            <p id="winsCount" class="stat-value">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Taux de Victoire</h3>
+                            <p id="winRate" class="stat-value">0%</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>XP Total</h3>
+                            <p id="totalXp" class="stat-value">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Onglet Communautés -->
+                <div id="communitiesTab" class="profile-tab">
+                    <div id="userCommunities" class="communities-list">
+                        <p class="no-communities">Vous n'êtes membre d'aucune communauté.</p>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal de modification du profil -->
+    <div id="editProfileModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Modifier le profil</h3>
+                <button id="closeModalBtn" class="modal-close">×</button>
+            </div>
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label for="editUsername">Nom d'utilisateur</label>
+                    <input type="text" id="editUsername" name="username" placeholder="Votre nom d'utilisateur">
+                </div>
+                <div class="form-group">
+                    <label for="editFullName">Nom complet</label>
+                    <input type="text" id="editFullName" name="fullName" placeholder="Votre nom complet">
+                </div>
+                <div class="form-group">
+                    <label for="editBio">Biographie</label>
+                    <textarea id="editBio" name="bio" rows="4" placeholder="Parlez-nous de vous..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editFavoriteTeam">Équipe favorite</label>
+                    <input type="text" id="editFavoriteTeam" name="favoriteTeam" placeholder="PSG, Real Madrid, etc.">
+                </div>
+                <div class="form-group">
+                    <label for="editPlayStyle">Style de jeu</label>
+                    <select id="editPlayStyle" name="playStyle">
+                        <option value="">Sélectionnez votre style</option>
+                        <option value="attacking">Attaquant</option>
+                        <option value="defensive">Défensif</option>
+                        <option value="balanced">Équilibré</option>
+                        <option value="counter">Contre-attaque</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editRegion">Région</label>
+                    <select id="editRegion" name="region">
+                        <option value="">Sélectionnez votre région</option>
+                        <option value="europe">Europe</option>
+                        <option value="americas">Amériques</option>
+                        <option value="asia">Asie</option>
+                        <option value="africa">Afrique</option>
+                        <option value="oceania">Océanie</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Enregistrer</button>
+                    <button type="button" id="cancelEditBtn" class="btn-secondary">Annuler</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -110,8 +252,9 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js"></script>
-    <script src="profile.js"></script>
-    <script src="nav-auth.js"></script>
+    <script src="supabase-config.js?v=1"></script>
+    <script src="profile.js?v=1"></script>
+    <script src="social-profile.js?v=1"></script>
+    <script src="nav-auth.js?v=1"></script>
 </body>
 </html>
