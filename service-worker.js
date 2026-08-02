@@ -1,4 +1,7 @@
-const CACHE_NAME = 'efootball-red-dimension-v1';
+// Version du cache - changez ce numéro pour forcer la mise à jour
+const CACHE_VERSION = 'v2';
+const CACHE_NAME = 'efootball-red-dimension-' + CACHE_VERSION;
+
 const urlsToCache = [
     '/',
     '/index.html',
@@ -7,33 +10,49 @@ const urlsToCache = [
     '/articles.html',
     '/auth.html',
     '/profile.html',
+    '/feed.html',
+    '/leaderboard.html',
     '/styles.css',
     '/auth.css',
     '/articles.css',
     '/tutoriel.css',
+    '/social.css',
+    '/leaderboard.css',
     '/script.js',
     '/auth.js',
     '/nav-auth.js',
     '/profile.js',
     '/comments.js',
     '/newsletter.js',
+    '/social-profile.js',
+    '/feed.js',
+    '/leaderboard.js',
+    '/followers.js',
+    '/likes.js',
     'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2',
     'https://joyful.to/embed/p/Gj5hTTViyWDwjFQ9tpcm7/widget.js'
 ];
 
 // Installation du service worker
 self.addEventListener('install', function(event) {
+    console.log('Service Worker installation - Version:', CACHE_VERSION);
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(function(cache) {
-                console.log('Cache ouvert');
+                console.log('Cache ouvert:', CACHE_NAME);
                 return cache.addAll(urlsToCache);
             })
+            .catch(function(error) {
+                console.error('Erreur lors du cache:', error);
+            })
     );
+    // Force l'activation immédiate
+    self.skipWaiting();
 });
 
 // Activation du service worker
 self.addEventListener('activate', function(event) {
+    console.log('Service Worker activation - Version:', CACHE_VERSION);
     event.waitUntil(
         caches.keys().then(function(cacheNames) {
             return Promise.all(
@@ -46,25 +65,23 @@ self.addEventListener('activate', function(event) {
             );
         })
     );
+    // Prend le contrôle immédiatement de toutes les pages
+    return self.clients.claim();
 });
 
-// Interception des requêtes
+// Interception des requêtes avec stratégie Network First pour les fichiers critiques
 self.addEventListener('fetch', function(event) {
-    event.respondWith(
-        caches.match(event.request)
-            .then(function(response) {
-                // Cache hit - return response
-                if (response) {
-                    return response;
-                }
-
-                // Clone de la requête
-                const fetchRequest = event.request.clone();
-
-                return fetch(fetchRequest).then(function(response) {
+    const url = event.request.url;
+    
+    // Stratégie Network First pour les fichiers HTML et JS critiques
+    if (url.includes('.html') || url.includes('.js') || url.includes('css')) {
+        event.respondWith(
+            fetch(event.request)
+                .then(function(response) {
                     // Vérifier si la réponse est valide
                     if (!response || response.status !== 200 || response.type !== 'basic') {
-                        return response;
+                        // Fallback vers le cache
+                        return caches.match(event.request);
                     }
 
                     // Clone de la réponse
@@ -76,7 +93,36 @@ self.addEventListener('fetch', function(event) {
                         });
 
                     return response;
-                });
-            })
-    );
+                })
+                .catch(function() {
+                    // Fallback vers le cache si réseau échoue
+                    return caches.match(event.request);
+                })
+        );
+    } else {
+        // Stratégie Cache First pour les autres ressources
+        event.respondWith(
+            caches.match(event.request)
+                .then(function(response) {
+                    if (response) {
+                        return response;
+                    }
+
+                    return fetch(event.request).then(function(response) {
+                        if (!response || response.status !== 200 || response.type !== 'basic') {
+                            return response;
+                        }
+
+                        const responseToCache = response.clone();
+
+                        caches.open(CACHE_NAME)
+                            .then(function(cache) {
+                                cache.put(event.request, responseToCache);
+                            });
+
+                        return response;
+                    });
+                })
+        );
+    }
 });

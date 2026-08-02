@@ -20,4 +20,8 @@ EOF
 # Mettre à jour tous les fichiers HTML avec la nouvelle version
 find . -name "*.html" -type f -exec sed -i "s/\?v=[0-9]*/?v=$VERSION/g" {} \;
 
-echo "✅ Build terminé - Tous les fichiers HTML mis à jour avec version $VERSION"
+# Mettre à jour la version du cache dans le service worker
+CACHE_VERSION="v$VERSION"
+sed -i "s/CACHE_VERSION = '.*'/CACHE_VERSION = '$CACHE_VERSION'/g" service-worker.js
+
+echo "✅ Build terminé - Tous les fichiers mis à jour avec version $VERSION"
