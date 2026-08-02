@@ -178,12 +178,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const profileData = {
                 username: document.getElementById('editUsername').value,
                 full_name: document.getElementById('editFullName').value,
-                bio: document.getElementById('editBio').value,
-                favorite_team: document.getElementById('editFavoriteTeam').value,
-                play_style: document.getElementById('editPlayStyle').value,
-                region: document.getElementById('editRegion').value,
                 updated_at: new Date().toISOString()
             };
+
+            // Ajouter les champs optionnels seulement s'ils ont une valeur
+            const bioValue = document.getElementById('editBio').value;
+            if (bioValue) profileData.bio = bioValue;
+
+            const favoriteTeamValue = document.getElementById('editFavoriteTeam').value;
+            if (favoriteTeamValue) profileData.favorite_team = favoriteTeamValue;
+
+            const playStyleValue = document.getElementById('editPlayStyle').value;
+            if (playStyleValue) profileData.play_style = playStyleValue;
+
+            const regionValue = document.getElementById('editRegion').value;
+            if (regionValue) profileData.region = regionValue;
 
             const { error } = await supabaseClient
                 .from('profiles')
